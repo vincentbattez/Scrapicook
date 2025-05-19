@@ -1,4 +1,7 @@
 import {IImage} from "@models/image/image.interface";
+import {
+  IJowCreateRecipeBody
+} from "queries/jow/interfaces/requests/jowCreateRecipeBody.interface";
 
 export class ImageModel {
   private image: IImage = null;
@@ -11,7 +14,9 @@ export class ImageModel {
     this.image = image;
   }
 
-  public toJowRecipe(): string | null {
-    return this.image;
+  public toJowRecipe(): Pick<IJowCreateRecipeBody, "imageUrl"> {
+    return {
+      imageUrl: this.image ?? "",
+    };
   }
 }

@@ -7,7 +7,6 @@ export class RecipeCreatorFactory {
     // Extract the source from the URL
     if (destination === RecipeCreationAppEnum.JOW) {
       console.log(`🌟 Create ${destination} recipe`);
-
       return JowRecipeCreator.create(Recipe);
     }
 

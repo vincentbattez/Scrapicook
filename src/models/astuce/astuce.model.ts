@@ -1,4 +1,7 @@
 import { IAstuce } from "@models/astuce/astuce.interface";
+import {
+  IJowCreateRecipeBody
+} from "queries/jow/interfaces/requests/jowCreateRecipeBody.interface";
 
 export class AstuceModel {
   private astuce: IAstuce = null;
@@ -11,18 +14,27 @@ export class AstuceModel {
     this.astuce = astuce;
   }
 
-  public toJowRecipe(): string {
+  public toJowRecipe(): Pick<IJowCreateRecipeBody, "tip"> {
     const jowMaxAstuceLength = 350;
     let jowAstuce = this.astuce;
 
     if (!jowAstuce) {
-      return
+      return {
+        tip: {
+          description: "",
+        },
+      };
     }
 
     if (jowAstuce.length > jowMaxAstuceLength) {
       jowAstuce = jowAstuce.slice(0, jowMaxAstuceLength - 3) + '...';
+      console.warn(`Astuce description is too long. Truncated to ${jowMaxAstuceLength} characters.`);
     }
 
-    return jowAstuce;
+    return {
+      tip: {
+        description: jowAstuce,
+      },
+    };
   }
 }

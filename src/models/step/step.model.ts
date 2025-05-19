@@ -1,4 +1,7 @@
 import { IStep } from "@models/step/step.interface";
+import {
+  IJowCreateRecipeBody
+} from "queries/jow/interfaces/requests/jowCreateRecipeBody.interface";
 
 export class StepModel {
   private readonly step: IStep;
@@ -20,6 +23,7 @@ export class StepModel {
 
     if (jowStep.description.length > jowMaxStepLength) {
       jowStep.description = jowStep.description.slice(0, jowMaxStepLength - 3) + '...';
+      console.warn(`Step ${jowStep.step} description is too long. Truncated to ${jowMaxStepLength} characters.`);
     }
 
     return jowStep;
@@ -41,7 +45,14 @@ export class StepListModel {
     }));
   }
 
-  public toJowRecipe(): IStep[] {
-    return this.step.map((step) => step.toJowRecipe());
+  public toJowRecipe(): Pick<IJowCreateRecipeBody, "directions"> {
+    return {
+      directions: this.step.map((step) => {
+        return {
+          label: step.toJowRecipe().description,
+          involvedIngredients: [],
+        };
+      }),
+    }
   }
 }

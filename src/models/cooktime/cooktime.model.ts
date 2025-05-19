@@ -1,4 +1,7 @@
 import {ICookTime, ITime} from "@models/cooktime/cooktime.interface";
+import {
+  IJowCreateRecipeBody
+} from "queries/jow/interfaces/requests/jowCreateRecipeBody.interface";
 
 export class CookTimeModel {
   private readonly cooktime: ICookTime = {
@@ -41,11 +44,22 @@ export class CookTimeModel {
   }
 
   private setTime(time: ITime, key: keyof ICookTime): void {
-    this.cooktime[key].value = Number(time.value) ?? null
-    this.cooktime[key].unit = time.unit ?? null
+    let value = Number(time.value);
+    // convert to minute
+    if (["h", "heure", "hour"].includes(time.unit)) {
+      value *= 60;
+    }
+
+    this.cooktime[key].value = value ?? null
+    this.cooktime[key].unit = "min"
   }
 
-  public toJowRecipe(): ICookTime {
-    return this.cooktime;
+  public toJowRecipe(): Pick<IJowCreateRecipeBody, "cookingTime" | "preparationTime" | "restingTime"> {
+    return {
+      cookingTime: this.getCookTime().cooking.value ? String(this.getCookTime().cooking.value) : "",
+      preparationTime: this.getCookTime().preparation.value ? String(this.getCookTime().preparation.value) : "",
+      restingTime: this.getCookTime().rest.value ? String(this.getCookTime().rest.value) : "",
+    };
   }
 }
+

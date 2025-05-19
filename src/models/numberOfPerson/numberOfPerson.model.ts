@@ -1,4 +1,7 @@
 import {INumberOfPerson} from "@models/numberOfPerson/numberOfPerson.interface";
+import {
+  IJowCreateRecipeBody
+} from "queries/jow/interfaces/requests/jowCreateRecipeBody.interface";
 
 export class NumberOfPersonModel {
   private numberOfPerson: INumberOfPerson = 0;
@@ -15,7 +18,9 @@ export class NumberOfPersonModel {
     this.numberOfPerson = Number(numberOfPerson);
   }
 
-  public toJowRecipe(): number {
-    return 0;
+  public toJowRecipe(): Pick<IJowCreateRecipeBody, "userCoversCount"> {
+    return {
+      userCoversCount: this.numberOfPerson,
+    };
   }
 }

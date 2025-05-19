@@ -5,7 +5,7 @@ import { RecipeCreationAppEnum, publishRecipeForSource } from "@services/recipe-
 test('get started link', async ({ page }) => {
   await page.goto('https://www.cuisineaz.com/recettes/tzatziki-facile-17295.aspx');
   const Recipe = await parseRecipeFromPage(page)
-  console.log("📖", Recipe.getRecipe().steps.getStep());
+  console.log("📖", Recipe.getRecipe().cookTime.getCookTime());
   console.log("📖", Recipe.getRecipe().steps.toJowRecipe());
   // @todo: expect to recipe has well all the properties
 

@@ -16,23 +16,24 @@ export class CuisineAZCookTimeExtractor implements ICooktimeExtractor {
       const normalizedTitle = title.toLowerCase().trim();
 
       if (normalizedTitle.includes("préparation")) {
-        acc.preparation = {
+        acc.preparationTime = {
           value,
           unit: unit.join(" "),
         };
       } else if (normalizedTitle.includes("cuisson")) {
-        acc.cooking = {
+        acc.cookingTime = {
           value,
           unit: unit.join(" "),
         };
       } else if (normalizedTitle.includes("repos")) {
-        acc.rest = {
+        acc.restTime = {
           value,
           unit: unit.join(" "),
         };
       }
+
       return acc;
-    }, { preparation: null, cooking: null, rest: null });
+    }, { preparationTime: null, cookingTime: null, restTime: null });
 
     // 🌟 Feed CookTime
     CookTime.fromExtractor(cookTime);
