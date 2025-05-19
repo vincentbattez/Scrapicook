@@ -1,0 +1,48 @@
+{
+  "parserOptions": {
+    "ecmaVersion": 2022,
+  },
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "esModuleInterop": true,
+    "strict": true,
+    "resolveJsonModule": true,
+    "removeComments": true,
+    "newLine": "lf",
+    "noUnusedLocals": true,
+    "noFallthroughCasesInSwitch": true,
+    "isolatedModules": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    "lib": [
+      "ESNext"
+    ],
+    "baseUrl": "./",
+    "outDir": "./dist",
+    "rootDirs": ["./src", "./tests"],
+    "sourceMap": true,
+    "useUnknownInCatchVariables": false,
+    "paths": {
+      "@extractors/*": ["src/extractors/*"],
+      "@factories/*": ["src/factories/*"],
+      "@models/*": ["src/models/*"],
+      "@services/*": ["src/services/*"],
+      "@src/*": ["src/*"],
+      "@tests/*": ["tests/*"]
+    },
+    "incremental": true,
+  },
+  "tsc-alias": {
+    "verbose": false,
+    "resolveFullPaths": true
+  },
+  "include": [
+    "src/**/*.ts",
+    "tests/**/*.ts",
+    "prisma/**/*.ts",
+    "commitlint.config.ts",
+    "vitest.config.ts"
+  ]
+}
