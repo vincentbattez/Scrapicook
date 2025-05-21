@@ -1,6 +1,4 @@
 import { IRecipe } from "@models/recipe/recipe.interface";
-import {Page} from "@playwright/test";
+import {IExtractorAbstract} from "@extractors/interfaces/extractorAbstract.interface";
 
-export interface IIngredientsExtractor {
-  extract(html: Page): Promise<IRecipe["ingredients"]>;
-}
+export type IIngredientsExtractor = IExtractorAbstract<IRecipe["ingredientList"]>

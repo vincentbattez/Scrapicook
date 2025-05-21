@@ -1,5 +1,4 @@
 import { IRecipe } from "@models/recipe/recipe.interface";
+import {IExtractorAbstract} from "@extractors/interfaces/extractorAbstract.interface";
 
-export interface ICooktimeExtractor {
-  extract(html: string): IRecipe["cookTime"];
-}
+export type ICooktimeExtractor = IExtractorAbstract<IRecipe["cookTime"]>

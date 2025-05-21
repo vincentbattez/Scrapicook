@@ -1,17 +1,16 @@
 import {IImage} from "@models/image/image.interface";
-import {
-  IJowCreateRecipeBody
-} from "queries/jow/interfaces/requests/jowCreateRecipeBody.interface";
+import {IJowCreateRecipeBody} from "queries/jow/interfaces/requests/jowCreateRecipeBody.interface";
+import {IModelAbstract} from "@models/interfaces/modelAbstract.interface";
 
-export class ImageModel {
-  private image: IImage = null;
+export class ImageModel implements IModelAbstract<IImage> {
+  private readonly image: IImage;
 
-  public getImage(): IImage {
-    return this.image;
+  constructor(image: IImage) {
+    this.image = image;
   }
 
-  public fromExtractor(image: string | null): void {
-    this.image = image;
+  public get(): IImage {
+    return this.image;
   }
 
   public toJowRecipe(): Pick<IJowCreateRecipeBody, "imageUrl"> {

@@ -1,29 +1,25 @@
-import {RecipeModel} from "@models/recipe/recipe.model";
-import {
-  CuisineAZIngredientExtractor,
-} from "@extractors/cuisineaz/ingredient.extractor";
 import { Page } from "@playwright/test";
-import {
-  CuisineAZNumberOfPersonExtractor
-} from "@extractors/cuisineaz/numberOfPerson.extractor";
-import {
-  CuisineAZCookTimeExtractor
-} from "@extractors/cuisineaz/cookTime.extractor";
-import {CuisineAZTitleExtractor} from "@extractors/cuisineaz/title.extractor";
-import {CuisineAZImageExtractor} from "@extractors/cuisineaz/image.extractor";
-import {CuisineAZStepExtractor} from "@extractors/cuisineaz/step.extractor";
-import {CuisineAZAstuceExtractor} from "@extractors/cuisineaz/astuce.extractor";
+import {RecipeModel} from "@models/recipe/recipe.model";
+import {cuisineAZIngredientExtractor} from "@extractors/cuisineaz/ingredient.extractor";
+import {cuisineAZNumberOfPersonExtractor} from "@extractors/cuisineaz/numberOfPerson.extractor";
+import {cuisineAZCookTimeExtractor} from "@extractors/cuisineaz/cookTime.extractor";
+import {cuisineAZTitleExtractor} from "@extractors/cuisineaz/title.extractor";
+import {cuisineAZImageExtractor} from "@extractors/cuisineaz/image.extractor";
+import {cuisineAZStepExtractor} from "@extractors/cuisineaz/step.extractor";
+import {cuisineAZAstuceExtractor} from "@extractors/cuisineaz/astuce.extractor";
+import {RecipeSourceModel} from "@models/recipe-source/recipe-source.model";
 
-export class CuisineAZRecipeExtractor implements RecipeModel {
-  static async create(page: Page): Promise<RecipeModel> {
+export const cuisineAZRecipeExtractor = {
+  extract: async (page: Page, RecipeSource: RecipeSourceModel): Promise<RecipeModel> => {
     return new RecipeModel({
-      title: await CuisineAZTitleExtractor.extract(page),
-      image: await CuisineAZImageExtractor.extract(page),
-      cookTime: await CuisineAZCookTimeExtractor.extract(page),
-      numberOfPerson: await CuisineAZNumberOfPersonExtractor.extract(page),
-      ingredients: await CuisineAZIngredientExtractor.extract(page),
-      steps: await CuisineAZStepExtractor.extract(page),
-      astuce: await CuisineAZAstuceExtractor.extract(page),
+      title: await cuisineAZTitleExtractor.extract(page),
+      image: await cuisineAZImageExtractor.extract(page),
+      cookTime: await cuisineAZCookTimeExtractor.extract(page),
+      numberOfPerson: await cuisineAZNumberOfPersonExtractor.extract(page),
+      ingredientList: await cuisineAZIngredientExtractor.extract(page, RecipeSource),
+      stepList: await cuisineAZStepExtractor.extract(page),
+      astuce: await cuisineAZAstuceExtractor.extract(page),
+      recipeSource: RecipeSource,
     });
-  }
+  },
 }

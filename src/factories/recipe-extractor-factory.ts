@@ -1,18 +1,27 @@
-import { CuisineAZRecipeExtractor } from "@extractors/cuisineaz/recipe-extractor";
+import {cuisineAZRecipeExtractor} from "@extractors/cuisineaz/recipe-extractor";
 import {Page} from "@playwright/test";
 import {RecipeModel} from "@models/recipe/recipe.model";
+import {recipeSourceExtractor} from "@extractors/common/recipeSource.extractor";
+import {extractorRecipeAvailableEnum} from "@models/recipe-source/recipe-source.model";
 
-export class RecipeExtractorFactory {
-  static create(page: Page): Promise<RecipeModel> {
+
+const extractorMapping = {
+  [extractorRecipeAvailableEnum.CUISINEAZ]: cuisineAZRecipeExtractor,
+}
+
+export const recipeExtractorFactory = {
+  create: async (page: Page): Promise<RecipeModel> => {
     // Extract the source from the URL
-    const url = page.url();
-    const source = url.split("/")[2];
+    const RecipeSource = await recipeSourceExtractor.extract(page)
 
-    if (source.toLowerCase() === "www.cuisineaz.com") {
-      console.log(`🌟 Extract ${source} recipe`);
-      return CuisineAZRecipeExtractor.create(page);
+    // Check if the source is supported
+    if (!extractorMapping[RecipeSource.get().source]) {
+      throw new Error(`Recipe source ${RecipeSource.get().source} is not supported`);
     }
 
-    throw new Error(`Source non supportée (${source})`);
+    // Choose the extractor based on the source
+    console.log(`🌟 Extract ${RecipeSource.get().source} recipe`);
+    return extractorMapping[RecipeSource.get().source].extract(page, RecipeSource);
+
   }
 }

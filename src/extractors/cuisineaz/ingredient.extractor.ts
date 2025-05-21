@@ -4,8 +4,8 @@ import {
 import {IngredientListModel} from "@models/ingredient/ingredient.model";
 import {Page} from "@playwright/test";
 
-export class CuisineAZIngredientExtractor implements IIngredientsExtractor {
-  static async extract(page: Page): Promise<IngredientListModel> {
+export const cuisineAZIngredientExtractor: IIngredientsExtractor = {
+  extract: async (page: Page): Promise<IngredientListModel> => {
     await page.waitForSelector('.ingredient_list');
     const ingredientList = await page.locator('.ingredient_list');
 

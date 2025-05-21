@@ -1,14 +1,11 @@
-import { ITitleExtractor } from "@extractors/interfaces/title-extractor.interface";
 import {Page} from "@playwright/test";
+import { ITitleExtractor } from "@extractors/interfaces/title-extractor.interface";
 import {TitleModel} from "@models/title/title.model";
 
-export class CuisineAZTitleExtractor implements ITitleExtractor {
-  static async extract(page: Page): Promise<TitleModel> {
-    let title = await page.locator('.recipe-title').innerText();
+export const cuisineAZTitleExtractor: ITitleExtractor = {
+  extract: async (page: Page): Promise<TitleModel> => {
+    let title = await page.locator('.recipe-title')?.innerText();
 
-    const Title = new TitleModel()
-    Title.fromExtractor(title);
-
-    return Title
-  }
+    return new TitleModel(title)
+  },
 }

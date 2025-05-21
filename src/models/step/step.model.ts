@@ -2,8 +2,9 @@ import { IStep } from "@models/step/step.interface";
 import {
   IJowCreateRecipeBody
 } from "queries/jow/interfaces/requests/jowCreateRecipeBody.interface";
+import {IModelAbstract} from "@models/interfaces/modelAbstract.interface";
 
-export class StepModel {
+export class StepModel implements IModelAbstract<IStep> {
   private readonly step: IStep;
 
   constructor(step: IStep) {
@@ -13,7 +14,7 @@ export class StepModel {
     };
   }
 
-  public getStep(): IStep {
+  public get(): IStep {
     return this.step;
   }
 
@@ -30,12 +31,12 @@ export class StepModel {
   }
 }
 
-export class StepListModel {
+export class StepListModel implements IModelAbstract<IStep[]> {
   private readonly step: StepModel[] = [];
   private stepCount: number = 0;
 
-  public getStep(): StepModel[] {
-    return this.step;
+  public get(): IStep[] {
+    return this.step.map((step) => step.get());
   }
 
   public pushStep(description: string): void {

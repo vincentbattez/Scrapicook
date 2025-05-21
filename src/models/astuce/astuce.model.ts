@@ -1,17 +1,16 @@
 import { IAstuce } from "@models/astuce/astuce.interface";
-import {
-  IJowCreateRecipeBody
-} from "queries/jow/interfaces/requests/jowCreateRecipeBody.interface";
+import {IJowCreateRecipeBody} from "queries/jow/interfaces/requests/jowCreateRecipeBody.interface";
+import {IModelAbstract} from "@models/interfaces/modelAbstract.interface";
 
-export class AstuceModel {
-  private astuce: IAstuce = null;
+export class AstuceModel implements IModelAbstract<IAstuce> {
+  private readonly astuce: IAstuce;
 
-  public getAstuce(): IAstuce {
-    return this.astuce;
+  constructor(astuce: IAstuce) {
+    this.astuce = astuce || null;
   }
 
-  public fromExtractor(astuce: string): void {
-    this.astuce = astuce;
+  public get(): IAstuce {
+    return this.astuce;
   }
 
   public toJowRecipe(): Pick<IJowCreateRecipeBody, "tip"> {

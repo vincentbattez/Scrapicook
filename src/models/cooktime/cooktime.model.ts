@@ -2,8 +2,10 @@ import {ICookTime, ITime} from "@models/cooktime/cooktime.interface";
 import {
   IJowCreateRecipeBody
 } from "queries/jow/interfaces/requests/jowCreateRecipeBody.interface";
+import {stringUtils} from "@src/utils/string";
+import {IModelAbstract} from "@models/interfaces/modelAbstract.interface";
 
-export class CookTimeModel {
+export class CookTimeModel implements IModelAbstract<ICookTime> {
   private readonly cooktime: ICookTime = {
     preparation: {
       value: null,
@@ -17,48 +19,49 @@ export class CookTimeModel {
       value: null,
       unit: null,
     },
-  };
+  }
 
-  public getCookTime(): ICookTime {
+  constructor(cooktime: Partial<ICookTime>) {
+    (Object.keys(this.cooktime) as (keyof ICookTime)[]).forEach((key) => {
+      if (cooktime[key]) {
+        this.setTime(cooktime[key], key);
+      }
+    });
+  }
+
+  public get(): ICookTime {
     return this.cooktime;
   }
 
-  public fromExtractor({
-     preparationTime,
-     cookingTime,
-     restTime,
-   }: {
-    preparationTime: ITime;
-    cookingTime: ITime;
-    restTime: ITime;
-  }): void {
-    if (preparationTime) {
-      this.setTime(preparationTime, "preparation");
-    }
-    if (cookingTime) {
-      this.setTime(cookingTime, "cooking");
-    }
-    if (restTime) {
-      this.setTime(restTime, "rest");
-    }
-  }
-
   private setTime(time: ITime, key: keyof ICookTime): void {
-    let value = Number(time.value);
+    let value: number = Number(time.value);
+    let normalizedUnit: string | null = stringUtils.normalizeString(time.unit ?? "");
+
+    if (!normalizedUnit) {
+      normalizedUnit = null
+    }
+
     // convert to minute
-    if (["h", "heure", "hour"].includes(time.unit)) {
+    if (
+      normalizedUnit &&
+      stringUtils.findMatchingStrings({
+        sourceWordList: ["hour", "heure", "h"],
+        targetWordList: [normalizedUnit],
+      }).length
+    ) {
       value *= 60;
+      normalizedUnit = "min";
     }
 
     this.cooktime[key].value = value ?? null
-    this.cooktime[key].unit = "min"
+    this.cooktime[key].unit = normalizedUnit
   }
 
   public toJowRecipe(): Pick<IJowCreateRecipeBody, "cookingTime" | "preparationTime" | "restingTime"> {
     return {
-      cookingTime: this.getCookTime().cooking.value ? String(this.getCookTime().cooking.value) : "",
-      preparationTime: this.getCookTime().preparation.value ? String(this.getCookTime().preparation.value) : "",
-      restingTime: this.getCookTime().rest.value ? String(this.getCookTime().rest.value) : "",
+      cookingTime: this.get().cooking.value ? String(this.get().cooking.value) : "",
+      preparationTime: this.get().preparation.value ? String(this.get().preparation.value) : "",
+      restingTime: this.get().rest.value ? String(this.get().rest.value) : "",
     };
   }
 }

@@ -1,21 +1,31 @@
 import {Page} from "@playwright/test";
 import {IAstuceExtractor} from "@extractors/interfaces/astuce-extractor.interface";
 import {AstuceModel} from "@models/astuce/astuce.model";
+import {stringUtils} from "@src/utils/string";
 
-export class CuisineAZAstuceExtractor implements IAstuceExtractor {
-  static async extract(page: Page): Promise<AstuceModel> {
-    const astuceList = await page.locator('.recipe_section.primary_background').allInnerTexts();
-    let astuce = astuceList.find((item) => item.startsWith('ASTUCES'))
+const CUISINEAZ_ASTUCE_TITLE = ['astuce', 'tips', 'conseil'];
+
+export const cuisineAZAstuceExtractor: IAstuceExtractor = {
+  extract: async (page: Page): Promise<AstuceModel> => {
+    const extractedAstuceList = await page.locator('.recipe_section').allInnerTexts();
+    let matchingString
+
+    try {
+      matchingString = stringUtils.findFirstMatchingString({
+        sourceWordList: extractedAstuceList,
+        targetWordList: CUISINEAZ_ASTUCE_TITLE,
+      })
+    } catch (e) {
+      console.warn(e);
+      return new AstuceModel(null);
+    }
+
+    let astuce = extractedAstuceList[matchingString.firstMatchingStringIndex]
       .split('\n')
       .slice(1)
       .join('\n')
       .trim()
 
-    const astuceModel = new AstuceModel(astuce)
-
-    // 🌟 Feed Astuce
-    astuceModel.fromExtractor(astuce);
-
-    return astuceModel;
+    return new AstuceModel(astuce);
   }
 }

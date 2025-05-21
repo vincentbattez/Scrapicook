@@ -22,11 +22,11 @@ graph LR
     %% subgraph
     
     subgraph External cart
-        GSY_CART[Growsy Cart]
+        GSY_CART[Grosy Cart]
         JOW_CART[Jow Cart]
     end
     subgraph Food storage
-        GSY_STOCK[Growsy Storage]
+        GSY_STOCK[Grosy Storage]
     end
 
     subgraph Scrapicook
@@ -43,7 +43,7 @@ graph LR
     end
 
     subgraph External_recipe[External recipes]
-        GSY_RECIPE[Growsy recipe]
+        GSY_RECIPE[Grosy recipe]
         JOW_RECIPE[Jow recipe]
     end
 
@@ -96,17 +96,17 @@ graph TD
         MAR[Marmiton]
     end
     subgraph External_Recipes
-        GSY_RECIPE[Growsy Recipe]
+        GSY_RECIPE[Grosy Recipe]
         JOW_RECIPE[Jow Recipe]
     end
 
     %% External tools - cart / stock
     subgraph External Cart
-        GSY_CART[Growsy Cart]
+        GSY_CART[Grosy Cart]
         JOW_CART[Jow Cart]
     end
     subgraph Food Storage
-        GSY_STOCK[Growsy Storage]
+        GSY_STOCK[Grosy Storage]
     end
 
     %% Dependencies & interactions
@@ -141,7 +141,7 @@ graph TD
     end
     
     subgraph External cart
-        GSY_CART[Growsy Cart]
+        GSY_CART[Grosy Cart]
         JOW_CART[Jow Cart]
     end
     
@@ -171,7 +171,7 @@ graph TD
     end
 
     subgraph Food storage
-        GSY_STOCK[Growsy Storage]
+        GSY_STOCK[Grosy Storage]
     end
 
     JOW_CART -->|User bought| NORMALIZE
@@ -203,7 +203,7 @@ graph TD
     end
     
     subgraph External_recipe[External recipes]
-        GSY_RECIPE[Growsy recipe]
+        GSY_RECIPE[Grosy recipe]
         JOW_RECIPE[Jow recipe]
     end
 

@@ -2,16 +2,17 @@ import {ITitle} from "@models/title/title.interface";
 import {
   IJowCreateRecipeBody
 } from "queries/jow/interfaces/requests/jowCreateRecipeBody.interface";
+import {IModelAbstract} from "@models/interfaces/modelAbstract.interface";
 
-export class TitleModel {
-  private title: ITitle = "";
+export class TitleModel implements IModelAbstract<ITitle> {
+  private readonly title: ITitle;
 
-  public getTitle(): ITitle {
-    return this.title;
+  constructor(title: ITitle) {
+    this.title = title;
   }
 
-  public fromExtractor(title: string): void {
-    this.title = title;
+  public get(): ITitle {
+    return this.title;
   }
 
   public toJowRecipe(): Pick<IJowCreateRecipeBody, "title"> {

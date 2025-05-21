@@ -7,7 +7,7 @@ export class JowQueries {
   static async createRecipe(
     Recipe: RecipeModel,
   ) {
-    const recipe = Recipe.getRecipe()
+    const recipe = Recipe.get()
     const body: IJowCreateRecipeBody = {
       additionalConstituents: [],
       backgroundPattern: {
@@ -25,7 +25,7 @@ export class JowQueries {
       ...recipe.astuce.toJowRecipe(),
       ...recipe.title.toJowRecipe(),
       ...recipe.numberOfPerson.toJowRecipe(),
-      ...recipe.steps.toJowRecipe(),
+      ...recipe.stepList.toJowRecipe(),
     }
     console.log("body", body)
 
