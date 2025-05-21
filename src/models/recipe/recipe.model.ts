@@ -1,5 +1,5 @@
-import {IJSONRecipe, IRecipe} from "@models/recipe/recipe.interface";
-import {IModelAbstract} from "@models/interfaces/modelAbstract.interface";
+import { IModelAbstract } from "@models/interfaces/modelAbstract.interface";
+import { IJSONRecipe, IRecipe } from "@models/recipe/recipe.interface";
 
 export class RecipeModel implements IModelAbstract<IRecipe> {
   recipe: IRecipe;
@@ -22,6 +22,6 @@ export class RecipeModel implements IModelAbstract<IRecipe> {
       astuce: this.recipe.astuce.get(),
       ingredientList: this.recipe.ingredientList.get(),
       recipeSource: this.recipe.recipeSource.get(),
-    }
+    };
   }
 }

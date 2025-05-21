@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "description": "",
+  "sourcemap": true,
   "devDependencies": {
     "@playwright/test": "^1.52.0",
     "@trivago/prettier-plugin-sort-imports": "^5.2.2",

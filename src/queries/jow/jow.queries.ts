@@ -1,18 +1,15 @@
-import {RecipeModel} from "@models/recipe/recipe.model";
-import {
-  IJowCreateRecipeBody
-} from "queries/jow/interfaces/requests/jowCreateRecipeBody.interface";
+import { RecipeModel } from "@models/recipe/recipe.model.js";
+
+import { IJowCreateRecipeBody } from "@queries/jow/interfaces/requests/jowCreateRecipeBody.interface.js";
 
 export class JowQueries {
-  static async createRecipe(
-    Recipe: RecipeModel,
-  ) {
-    const recipe = Recipe.get()
+  static async createRecipe(Recipe: RecipeModel) {
+    const recipe = Recipe.get();
     const body: IJowCreateRecipeBody = {
       additionalConstituents: [],
       backgroundPattern: {
         color: "#075526",
-        imageUrl: "patterns/kale-03.png"
+        imageUrl: "patterns/kale-03.png",
       },
       requiredTools: [],
       placeHolderUrl: "placeholders/plate.png",
@@ -26,8 +23,8 @@ export class JowQueries {
       ...recipe.title.toJowRecipe(),
       ...recipe.numberOfPerson.toJowRecipe(),
       ...recipe.stepList.toJowRecipe(),
-    }
-    console.log("body", body)
+    };
+    console.log("body", body);
 
     // const createRecipeResponse = await fetch(process.env.JOW_API_URL + '/recipes/uploaded', {
     //   method: 'POST',
@@ -52,6 +49,6 @@ export class JowQueries {
     // })
 
     // console.log("createRecipeResponse", createRecipeResponse)
-    return {}
+    return {};
   }
 }

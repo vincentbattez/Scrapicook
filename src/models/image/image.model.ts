@@ -1,6 +1,7 @@
-import {IImage} from "@models/image/image.interface";
-import {IJowCreateRecipeBody} from "queries/jow/interfaces/requests/jowCreateRecipeBody.interface";
-import {IModelAbstract} from "@models/interfaces/modelAbstract.interface";
+import { IImage } from "@models/image/image.interface";
+import { IModelAbstract } from "@models/interfaces/modelAbstract.interface";
+
+import { IJowCreateRecipeBody } from "@queries/jow/interfaces/requests/jowCreateRecipeBody.interface";
 
 export class ImageModel implements IModelAbstract<IImage> {
   private readonly image: IImage;

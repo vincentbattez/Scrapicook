@@ -1,4 +1,4 @@
-import {IUnit} from "@models/ingredient/unit/unit.interface";
+import { IUnit } from "@models/ingredient/unit/unit.interface";
 
 export interface IIngredient {
   label: string;

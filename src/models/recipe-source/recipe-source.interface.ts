@@ -1,9 +1,7 @@
-import {
-  extractorRecipeAvailableEnum
-} from "@models/recipe-source/recipe-source.model";
+import { ExtractorRecipeAvailableEnum } from "@models/recipe-source/recipe-source.model";
 
 export interface IRecipeSource {
-  source: extractorRecipeAvailableEnum;
+  source: ExtractorRecipeAvailableEnum;
   title: string;
   url: string;
 }

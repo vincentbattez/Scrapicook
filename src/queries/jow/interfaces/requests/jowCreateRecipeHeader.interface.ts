@@ -1,3 +1,3 @@
-export interface JowCreateRecipeHeader {
+export interface IJowCreateRecipeHeader {
   authorization: string; // Bearer <token>
 }

@@ -1,6 +1,8 @@
-import {Page} from "@playwright/test";
-import {IRecipeSourceExtractor} from "@extractors/interfaces/recipeSource-extractor.interface";
-import {RecipeSourceModel} from "@models/recipe-source/recipe-source.model";
+import { Page } from "@playwright/test";
+
+import { RecipeSourceModel } from "@models/recipe-source/recipe-source.model";
+
+import { IRecipeSourceExtractor } from "@extractors/interfaces/recipeSource-extractor.interface";
 
 export const recipeSourceExtractor: IRecipeSourceExtractor = {
   extract: async (page: Page): Promise<RecipeSourceModel> => {
@@ -9,5 +11,5 @@ export const recipeSourceExtractor: IRecipeSourceExtractor = {
       title: await page.title(),
       url: page.url(),
     });
-  }
-}
+  },
+};

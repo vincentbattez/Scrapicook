@@ -1,10 +1,11 @@
-import {IModelAbstract} from "@models/interfaces/modelAbstract.interface";
+import { stringUtils } from "@src/utils/string";
+
 import {
   IUnit,
   unitEnum,
-  unitMapping
+  unitMapping,
 } from "@models/ingredient/unit/unit.interface";
-import {stringUtils} from "@src/utils/string";
+import { IModelAbstract } from "@models/interfaces/modelAbstract.interface";
 
 export class UnitModel implements IModelAbstract<IUnit> {
   private readonly unit: IUnit;
@@ -13,15 +14,19 @@ export class UnitModel implements IModelAbstract<IUnit> {
     if (!unit) {
       console.warn(`Unit "${unit}" is not defined. Defaulting to null.`);
       this.unit = null;
+
       return;
     }
 
-    if (!stringUtils.findMatchingStrings({
-      sourceWordList: Object.keys(unitMapping),
-      targetWordList: [unit],
-    }).length) {
+    if (
+      !stringUtils.findMatchingStrings({
+        sourceWordList: Object.keys(unitMapping),
+        targetWordList: [unit],
+      }).length
+    ) {
       console.warn(`Unit "${unit}" is not a valid unit. Defaulting to null.`);
       this.unit = null;
+
       return;
     }
 

@@ -1,4 +1,5 @@
 import { IRecipe } from "@models/recipe/recipe.interface";
-import {IExtractorAbstract} from "@extractors/interfaces/extractorAbstract.interface";
 
-export type IAstuceExtractor = IExtractorAbstract<IRecipe["astuce"]>
+import { IExtractorAbstract } from "@extractors/interfaces/extractorAbstract.interface";
+
+export type IAstuceExtractor = IExtractorAbstract<IRecipe["astuce"]>;

@@ -1,9 +1,9 @@
-import {ICookTime, ITime} from "@models/cooktime/cooktime.interface";
-import {
-  IJowCreateRecipeBody
-} from "queries/jow/interfaces/requests/jowCreateRecipeBody.interface";
-import {stringUtils} from "@src/utils/string";
-import {IModelAbstract} from "@models/interfaces/modelAbstract.interface";
+import { stringUtils } from "@src/utils/string";
+
+import { ICookTime, ITime } from "@models/cooktime/cooktime.interface";
+import { IModelAbstract } from "@models/interfaces/modelAbstract.interface";
+
+import { IJowCreateRecipeBody } from "@queries/jow/interfaces/requests/jowCreateRecipeBody.interface";
 
 export class CookTimeModel implements IModelAbstract<ICookTime> {
   private readonly cooktime: ICookTime = {
@@ -19,7 +19,7 @@ export class CookTimeModel implements IModelAbstract<ICookTime> {
       value: null,
       unit: null,
     },
-  }
+  };
 
   constructor(cooktime: Partial<ICookTime>) {
     (Object.keys(this.cooktime) as (keyof ICookTime)[]).forEach((key) => {
@@ -35,10 +35,12 @@ export class CookTimeModel implements IModelAbstract<ICookTime> {
 
   private setTime(time: ITime, key: keyof ICookTime): void {
     let value: number = Number(time.value);
-    let normalizedUnit: string | null = stringUtils.normalizeString(time.unit ?? "");
+    let normalizedUnit: string | null = stringUtils.normalizeString(
+      time.unit ?? "",
+    );
 
     if (!normalizedUnit) {
-      normalizedUnit = null
+      normalizedUnit = null;
     }
 
     // convert to minute
@@ -53,16 +55,22 @@ export class CookTimeModel implements IModelAbstract<ICookTime> {
       normalizedUnit = "min";
     }
 
-    this.cooktime[key].value = value ?? null
-    this.cooktime[key].unit = normalizedUnit
+    this.cooktime[key].value = value ?? null;
+    this.cooktime[key].unit = normalizedUnit;
   }
 
-  public toJowRecipe(): Pick<IJowCreateRecipeBody, "cookingTime" | "preparationTime" | "restingTime"> {
+  public toJowRecipe(): Pick<
+    IJowCreateRecipeBody,
+    "cookingTime" | "preparationTime" | "restingTime"
+  > {
     return {
-      cookingTime: this.get().cooking.value ? String(this.get().cooking.value) : "",
-      preparationTime: this.get().preparation.value ? String(this.get().preparation.value) : "",
+      cookingTime: this.get().cooking.value
+        ? String(this.get().cooking.value)
+        : "",
+      preparationTime: this.get().preparation.value
+        ? String(this.get().preparation.value)
+        : "",
       restingTime: this.get().rest.value ? String(this.get().rest.value) : "",
     };
   }
 }
-

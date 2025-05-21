@@ -57,7 +57,7 @@ export default [
       "@typescript-eslint/no-shadow": "warn",
       "@typescript-eslint/no-dynamic-delete": "warn",
       "@typescript-eslint/require-await": "off",
-      "@typescript-eslint/restrict-template-expressions": "warn",
+      "@typescript-eslint/restrict-template-expressions": "off",
       "@typescript-eslint/prefer-nullish-coalescing": "warn",
       "@typescript-eslint/no-floating-promises": "off",
       "@typescript-eslint/consistent-type-definitions": ["error", "interface"],

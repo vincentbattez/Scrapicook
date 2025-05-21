@@ -1,8 +1,7 @@
+import { IModelAbstract } from "@models/interfaces/modelAbstract.interface";
 import { IStep } from "@models/step/step.interface";
-import {
-  IJowCreateRecipeBody
-} from "queries/jow/interfaces/requests/jowCreateRecipeBody.interface";
-import {IModelAbstract} from "@models/interfaces/modelAbstract.interface";
+
+import { IJowCreateRecipeBody } from "@queries/jow/interfaces/requests/jowCreateRecipeBody.interface";
 
 export class StepModel implements IModelAbstract<IStep> {
   private readonly step: IStep;
@@ -23,8 +22,12 @@ export class StepModel implements IModelAbstract<IStep> {
     const jowStep = this.step;
 
     if (jowStep.description.length > jowMaxStepLength) {
-      jowStep.description = jowStep.description.slice(0, jowMaxStepLength - 3) + '...';
-      console.warn(`Step ${jowStep.step} description is too long. Truncated to ${jowMaxStepLength} characters.`);
+      jowStep.description =
+        jowStep.description.slice(0, jowMaxStepLength - 3) + "...";
+
+      console.warn(
+        `Step ${jowStep.step} description is too long. Truncated to ${jowMaxStepLength} characters.`,
+      );
     }
 
     return jowStep;
@@ -40,10 +43,12 @@ export class StepListModel implements IModelAbstract<IStep[]> {
   }
 
   public pushStep(description: string): void {
-    this.step.push(new StepModel({
-      step: ++this.stepCount,
-      description,
-    }));
+    this.step.push(
+      new StepModel({
+        step: ++this.stepCount,
+        description,
+      }),
+    );
   }
 
   public toJowRecipe(): Pick<IJowCreateRecipeBody, "directions"> {
@@ -54,6 +59,6 @@ export class StepListModel implements IModelAbstract<IStep[]> {
           involvedIngredients: [],
         };
       }),
-    }
+    };
   }
 }

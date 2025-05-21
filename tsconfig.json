@@ -3,9 +3,9 @@
     "ecmaVersion": 2022,
   },
   "compilerOptions": {
-    "target": "ES2022",
+    "target": "ESNext",
     "module": "NodeNext",
-    "moduleResolution": "NodeNext",
+    "moduleResolution": "node",
     "esModuleInterop": true,
     "strict": true,
     "resolveJsonModule": true,

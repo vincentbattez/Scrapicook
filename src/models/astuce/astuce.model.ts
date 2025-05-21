@@ -1,6 +1,7 @@
 import { IAstuce } from "@models/astuce/astuce.interface";
-import {IJowCreateRecipeBody} from "queries/jow/interfaces/requests/jowCreateRecipeBody.interface";
-import {IModelAbstract} from "@models/interfaces/modelAbstract.interface";
+import { IModelAbstract } from "@models/interfaces/modelAbstract.interface";
+
+import { IJowCreateRecipeBody } from "@queries/jow/interfaces/requests/jowCreateRecipeBody.interface";
 
 export class AstuceModel implements IModelAbstract<IAstuce> {
   private readonly astuce: IAstuce;
@@ -26,8 +27,11 @@ export class AstuceModel implements IModelAbstract<IAstuce> {
     }
 
     if (jowAstuce.length > jowMaxAstuceLength) {
-      jowAstuce = jowAstuce.slice(0, jowMaxAstuceLength - 3) + '...';
-      console.warn(`Astuce description is too long. Truncated to ${jowMaxAstuceLength} characters.`);
+      jowAstuce = jowAstuce.slice(0, jowMaxAstuceLength - 3) + "...";
+
+      console.warn(
+        `Astuce description is too long. Truncated to ${jowMaxAstuceLength} characters.`,
+      );
     }
 
     return {

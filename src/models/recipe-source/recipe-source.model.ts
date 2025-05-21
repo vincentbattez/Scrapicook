@@ -1,26 +1,28 @@
-import {IRecipeSource} from "@models/recipe-source/recipe-source.interface";
-import {IModelAbstract} from "@models/interfaces/modelAbstract.interface";
-import {stringUtils} from "@src/utils/string";
+import { stringUtils } from "@src/utils/string";
 
-export enum extractorRecipeAvailableEnum {
+import { IModelAbstract } from "@models/interfaces/modelAbstract.interface";
+import { IRecipeSource } from "@models/recipe-source/recipe-source.interface";
+
+export enum ExtractorRecipeAvailableEnum {
   CUISINEAZ = "cuisineaz",
 }
 
 export class RecipeSourceModel implements IModelAbstract<IRecipeSource> {
   private readonly recipeSource: IRecipeSource;
 
-  constructor(recipeSource: {
-    source: string;
-    title: string;
-    url: string;
-  }) {
+  constructor(recipeSource: { source: string; title: string; url: string }) {
     // get extractor source enum
-    const extractorRecipeAvailableEnumList = Object.values(extractorRecipeAvailableEnum);
+    const extractorRecipeAvailableEnumList = Object.values(
+      ExtractorRecipeAvailableEnum,
+    );
     const availableExtractor = stringUtils.findFirstMatchingString({
       sourceWordList: extractorRecipeAvailableEnumList,
       targetWordList: [recipeSource.source],
-    })
-    const availableExtractorEnum = extractorRecipeAvailableEnumList[availableExtractor.firstMatchingStringIndex];
+    });
+    const availableExtractorEnum =
+      extractorRecipeAvailableEnumList[
+        availableExtractor.firstMatchingStringIndex
+      ];
 
     this.recipeSource = {
       source: availableExtractorEnum,

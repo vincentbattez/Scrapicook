@@ -1,12 +1,12 @@
-import {IIngredient} from "@models/ingredient/ingredient.interface";
-import {IModelAbstract} from "@models/interfaces/modelAbstract.interface";
-import {UnitModel} from "@models/ingredient/unit/unit.model";
-import {unitEnum} from "@models/ingredient/unit/unit.interface";
+import { IIngredient } from "@models/ingredient/ingredient.interface";
+import { unitEnum } from "@models/ingredient/unit/unit.interface";
+import { UnitModel } from "@models/ingredient/unit/unit.model";
+import { IModelAbstract } from "@models/interfaces/modelAbstract.interface";
 
 export class IngredientModel implements IModelAbstract<IIngredient> {
   private readonly label: string;
   private readonly quantity: number | null;
-  private readonly unit: UnitModel
+  private readonly unit: UnitModel;
 
   constructor(ingredient: {
     label: string;
@@ -14,16 +14,23 @@ export class IngredientModel implements IModelAbstract<IIngredient> {
     unit: string | null;
   }) {
     if (!ingredient.quantity) {
-      console.warn(`Ingredient "${ingredient.label}" has no quantity. Defaulting to null.`);
+      console.warn(
+        `Ingredient "${ingredient.label}" has no quantity. Defaulting to null.`,
+      );
     }
 
     if (!ingredient.unit) {
-      console.warn(`Ingredient "${ingredient.label}" has no unit. Defaulting to "pièce".`);
+      console.warn(
+        `Ingredient "${ingredient.label}" has no unit. Defaulting to "pièce".`,
+      );
     }
 
     this.label = ingredient.label;
     this.quantity = ingredient.quantity || null;
-    this.unit = new UnitModel(ingredient.unit ?? (ingredient.quantity ? unitEnum.PIECE : null));
+
+    this.unit = new UnitModel(
+      ingredient.unit ?? (ingredient.quantity ? unitEnum.PIECE : null),
+    );
   }
 
   public get(): IIngredient {
@@ -56,7 +63,7 @@ export class IngredientListModel implements IModelAbstract<IIngredient[]> {
         label: ingredient.label,
         quantity: Number(ingredient.quantity),
         unit: ingredient.unit ?? null,
-      })
+      }),
     );
   }
 }
