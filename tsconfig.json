@@ -25,14 +25,16 @@
     "sourceMap": true,
     "useUnknownInCatchVariables": false,
     "paths": {
+      "@creators/*": ["src/creators/*"],
+      "@models/*": ["src/models/*"],
       "@extractors/*": ["src/extractors/*"],
       "@factories/*": ["src/factories/*"],
-      "@models/*": ["src/models/*"],
+      "@queries/*": ["src/queries/*"],
       "@services/*": ["src/services/*"],
+      "@utils/*": ["src/utils/*"],
       "@src/*": ["src/*"],
       "@tests/*": ["tests/*"]
     },
-    "incremental": true,
   },
   "tsc-alias": {
     "verbose": false,

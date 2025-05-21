@@ -1,0 +1,27 @@
+{
+  "plugins": [
+    "prettier-plugin-multiline-arrays",
+    "@trivago/prettier-plugin-sort-imports"
+  ],
+  "printWidth": 80,
+  "tabWidth": 2,
+  "trailingComma": "all",
+  "semi": true,
+  "bracketSpacing": true,
+  "arrayBracketNewline": true,
+  "arrayBracketSpacing": true,
+  "singleAttributePerLine": true,
+  "multilineArraysWrapThreshold": -1,
+  "importOrder": [
+    "^@creators/(.*)$",
+    "^@models/(.*)$",
+    "^@extractors/(.*)$",
+    "^@factories/(.*)$",
+    "^@queries/(.*)$",
+    "^@services/(.*)$",
+    "^@utils/(.*)$",
+    "^[./]"
+  ],
+  "importOrderSeparation": true,
+  "importOrderSortSpecifiers": true
+}
