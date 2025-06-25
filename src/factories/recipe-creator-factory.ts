@@ -2,20 +2,27 @@ import { JowRecipeCreator } from "@src/creators/jow/recipe-creator";
 
 import { RecipeModel } from "@models/recipe/recipe.model";
 
-import { RecipeCreationAppEnum } from "@services/recipe-creator";
+import { DestinationRecipeAvailableEnum } from "@services/recipe-creator";
 
-export class RecipeCreatorFactory {
-  static create(
-    Recipe: RecipeModel,
-    destination: RecipeCreationAppEnum,
-  ): Promise<any> {
-    // Extract the source from the URL
-    if (destination === RecipeCreationAppEnum.JOW) {
-      console.log(`🌟 Create ${destination} recipe`);
+// export enum DestinationRecipeAvailableEnum {
+//   JOW = "jow",
+//   // GROCY = "grocy",
+// }
+// Mapping des créateurs par destination
+// @todo: remove const and use imported enum
+const availableCreatorMapping = {
+  [DestinationRecipeAvailableEnum.JOW]: JowRecipeCreator,
+};
 
-      return JowRecipeCreator.create(Recipe);
+export const recipeCreatorFactory = {
+  create(Recipe: RecipeModel, destination: DestinationRecipeAvailableEnum) {
+    // Check if the destination is supported
+    if (!availableCreatorMapping[destination]) {
+      throw new Error(`Destination recipe "${destination}" is not supported`);
     }
 
-    throw new Error(`Destination non supportée (${destination})`);
-  }
-}
+    console.log(`🌟 Create ${destination} destination recipe`);
+
+    return availableCreatorMapping[destination].create(Recipe);
+  },
+};

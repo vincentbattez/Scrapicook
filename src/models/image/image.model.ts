@@ -1,9 +1,14 @@
 import { IImage } from "@models/image/image.interface";
-import { IModelAbstract } from "@models/interfaces/modelAbstract.interface";
+import {
+  IConvertibleAbstract,
+  IModelWith,
+} from "@models/interfaces/modelAbstract.interface";
 
-import { IJowCreateRecipeBody } from "@queries/jow/interfaces/requests/jowCreateRecipeBody.interface";
+import { recipeConverterFactory } from "@factories/recipe-converter-factory";
 
-export class ImageModel implements IModelAbstract<IImage> {
+import { DestinationRecipeAvailableEnum } from "@services/recipe-creator";
+
+export class ImageModel implements IModelWith<IImage, IConvertibleAbstract> {
   private readonly image: IImage;
 
   constructor(image: IImage) {
@@ -14,9 +19,7 @@ export class ImageModel implements IModelAbstract<IImage> {
     return this.image;
   }
 
-  public toJowRecipe(): Pick<IJowCreateRecipeBody, "imageUrl"> {
-    return {
-      imageUrl: this.image ?? "",
-    };
+  convert(availableConverter: DestinationRecipeAvailableEnum) {
+    return recipeConverterFactory.convert(availableConverter).toImage(this);
   }
 }

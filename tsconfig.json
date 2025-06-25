@@ -27,6 +27,7 @@
     "paths": {
       "@creators/*": ["src/creators/*"],
       "@models/*": ["src/models/*"],
+      "@converters/*": ["src/converters/*"],
       "@extractors/*": ["src/extractors/*"],
       "@factories/*": ["src/factories/*"],
       "@queries/*": ["src/queries/*"],

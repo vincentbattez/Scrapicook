@@ -3,7 +3,9 @@ import { stringUtils } from "@src/utils/string";
 import { ICookTime, ITime } from "@models/cooktime/cooktime.interface";
 import { IModelAbstract } from "@models/interfaces/modelAbstract.interface";
 
-import { IJowCreateRecipeBody } from "@queries/jow/interfaces/requests/jowCreateRecipeBody.interface";
+import { recipeConverterFactory } from "@factories/recipe-converter-factory";
+
+import { DestinationRecipeAvailableEnum } from "@services/recipe-creator";
 
 export class CookTimeModel implements IModelAbstract<ICookTime> {
   private readonly cooktime: ICookTime = {
@@ -59,18 +61,7 @@ export class CookTimeModel implements IModelAbstract<ICookTime> {
     this.cooktime[key].unit = normalizedUnit;
   }
 
-  public toJowRecipe(): Pick<
-    IJowCreateRecipeBody,
-    "cookingTime" | "preparationTime" | "restingTime"
-  > {
-    return {
-      cookingTime: this.get().cooking.value
-        ? String(this.get().cooking.value)
-        : "",
-      preparationTime: this.get().preparation.value
-        ? String(this.get().preparation.value)
-        : "",
-      restingTime: this.get().rest.value ? String(this.get().rest.value) : "",
-    };
+  convert(availableConverter: DestinationRecipeAvailableEnum) {
+    return recipeConverterFactory.convert(availableConverter).toCookTime(this);
   }
 }

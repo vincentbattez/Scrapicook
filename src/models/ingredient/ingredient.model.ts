@@ -1,9 +1,18 @@
 import { IIngredient } from "@models/ingredient/ingredient.interface";
 import { unitEnum } from "@models/ingredient/unit/unit.interface";
 import { UnitModel } from "@models/ingredient/unit/unit.model";
-import { IModelAbstract } from "@models/interfaces/modelAbstract.interface";
+import {
+  IConvertibleAbstract,
+  IModelWith,
+} from "@models/interfaces/modelAbstract.interface";
 
-export class IngredientModel implements IModelAbstract<IIngredient> {
+import { recipeConverterFactory } from "@factories/recipe-converter-factory";
+
+import { DestinationRecipeAvailableEnum } from "@services/recipe-creator";
+
+export class IngredientModel
+  implements IModelWith<IIngredient, IConvertibleAbstract>
+{
   private readonly label: string;
   private readonly quantity: number | null;
   private readonly unit: UnitModel;
@@ -26,7 +35,7 @@ export class IngredientModel implements IModelAbstract<IIngredient> {
     }
 
     this.label = ingredient.label;
-    this.quantity = ingredient.quantity || null;
+    this.quantity = ingredient.quantity ?? null;
 
     this.unit = new UnitModel(
       ingredient.unit ?? (ingredient.quantity ? unitEnum.PIECE : null),
@@ -40,16 +49,24 @@ export class IngredientModel implements IModelAbstract<IIngredient> {
       unit: this.unit.get(),
     };
   }
+
+  convert(availableConverter: DestinationRecipeAvailableEnum) {
+    return recipeConverterFactory
+      .convert(availableConverter)
+      .toIngredient(this);
+  }
 }
 
-export class IngredientListModel implements IModelAbstract<IIngredient[]> {
+export class IngredientListModel
+  implements IModelWith<IIngredient[], IConvertibleAbstract>
+{
   private readonly ingredientList: IngredientModel[] = [];
 
   constructor(ingredients: IngredientModel[]) {
     this.ingredientList = ingredients;
   }
 
-  get(): IIngredient[] {
+  public get(): IIngredient[] {
     return this.ingredientList.map((ingredient) => ingredient.get());
   }
 
@@ -65,5 +82,11 @@ export class IngredientListModel implements IModelAbstract<IIngredient[]> {
         unit: ingredient.unit ?? null,
       }),
     );
+  }
+
+  convert(availableConverter: DestinationRecipeAvailableEnum) {
+    return recipeConverterFactory
+      .convert(availableConverter)
+      .toIngredientList(this);
   }
 }

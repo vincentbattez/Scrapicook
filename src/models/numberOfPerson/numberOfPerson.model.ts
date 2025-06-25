@@ -1,9 +1,16 @@
-import { IModelAbstract } from "@models/interfaces/modelAbstract.interface";
+import {
+  IConvertibleAbstract,
+  IModelWith,
+} from "@models/interfaces/modelAbstract.interface";
 import { INumberOfPerson } from "@models/numberOfPerson/numberOfPerson.interface";
 
-import { IJowCreateRecipeBody } from "@queries/jow/interfaces/requests/jowCreateRecipeBody.interface";
+import { recipeConverterFactory } from "@factories/recipe-converter-factory";
 
-export class NumberOfPersonModel implements IModelAbstract<INumberOfPerson> {
+import { DestinationRecipeAvailableEnum } from "@services/recipe-creator";
+
+export class NumberOfPersonModel
+  implements IModelWith<INumberOfPerson, IConvertibleAbstract>
+{
   private readonly numberOfPerson: INumberOfPerson;
 
   constructor(numberOfPerson: string | number | null) {
@@ -18,9 +25,9 @@ export class NumberOfPersonModel implements IModelAbstract<INumberOfPerson> {
     return this.numberOfPerson;
   }
 
-  public toJowRecipe(): Pick<IJowCreateRecipeBody, "userCoversCount"> {
-    return {
-      userCoversCount: this.numberOfPerson,
-    };
+  convert(availableConverter: DestinationRecipeAvailableEnum) {
+    return recipeConverterFactory
+      .convert(availableConverter)
+      .toNumberOfPerson(this);
   }
 }

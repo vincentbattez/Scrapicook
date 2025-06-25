@@ -1,8 +1,15 @@
-import { IModelAbstract } from "@models/interfaces/modelAbstract.interface";
+import {
+  IConvertibleAbstract,
+  IModelWith,
+} from "@models/interfaces/modelAbstract.interface";
 import { IJSONRecipe, IRecipe } from "@models/recipe/recipe.interface";
 
-export class RecipeModel implements IModelAbstract<IRecipe> {
-  recipe: IRecipe;
+import { recipeConverterFactory } from "@factories/recipe-converter-factory";
+
+import { DestinationRecipeAvailableEnum } from "@services/recipe-creator";
+
+export class RecipeModel implements IModelWith<IRecipe, IConvertibleAbstract> {
+  private readonly recipe: IRecipe;
 
   constructor(recipe: IRecipe) {
     this.recipe = recipe;
@@ -23,5 +30,9 @@ export class RecipeModel implements IModelAbstract<IRecipe> {
       ingredientList: this.recipe.ingredientList.get(),
       recipeSource: this.recipe.recipeSource.get(),
     };
+  }
+
+  convert(availableConverter: DestinationRecipeAvailableEnum) {
+    return recipeConverterFactory.convert(availableConverter).toRecipe(this);
   }
 }

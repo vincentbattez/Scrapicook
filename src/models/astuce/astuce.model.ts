@@ -1,9 +1,14 @@
 import { IAstuce } from "@models/astuce/astuce.interface";
-import { IModelAbstract } from "@models/interfaces/modelAbstract.interface";
+import {
+  IConvertibleAbstract,
+  IModelWith,
+} from "@models/interfaces/modelAbstract.interface";
 
-import { IJowCreateRecipeBody } from "@queries/jow/interfaces/requests/jowCreateRecipeBody.interface";
+import { recipeConverterFactory } from "@factories/recipe-converter-factory";
 
-export class AstuceModel implements IModelAbstract<IAstuce> {
+import { DestinationRecipeAvailableEnum } from "@services/recipe-creator";
+
+export class AstuceModel implements IModelWith<IAstuce, IConvertibleAbstract> {
   private readonly astuce: IAstuce;
 
   constructor(astuce: IAstuce) {
@@ -14,30 +19,7 @@ export class AstuceModel implements IModelAbstract<IAstuce> {
     return this.astuce;
   }
 
-  public toJowRecipe(): Pick<IJowCreateRecipeBody, "tip"> {
-    const jowMaxAstuceLength = 350;
-    let jowAstuce = this.astuce;
-
-    if (!jowAstuce) {
-      return {
-        tip: {
-          description: "",
-        },
-      };
-    }
-
-    if (jowAstuce.length > jowMaxAstuceLength) {
-      jowAstuce = jowAstuce.slice(0, jowMaxAstuceLength - 3) + "...";
-
-      console.warn(
-        `Astuce description is too long. Truncated to ${jowMaxAstuceLength} characters.`,
-      );
-    }
-
-    return {
-      tip: {
-        description: jowAstuce,
-      },
-    };
+  convert(availableConverter: DestinationRecipeAvailableEnum.JOW) {
+    return recipeConverterFactory.convert(availableConverter).toAstuce(this);
   }
 }

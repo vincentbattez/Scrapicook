@@ -10,8 +10,9 @@ import { cuisineAZIngredientExtractor } from "@extractors/cuisineaz/ingredient.e
 import { cuisineAZNumberOfPersonExtractor } from "@extractors/cuisineaz/numberOfPerson.extractor";
 import { cuisineAZStepExtractor } from "@extractors/cuisineaz/step.extractor";
 import { cuisineAZTitleExtractor } from "@extractors/cuisineaz/title.extractor";
+import { IExtractorSource } from "@extractors/interfaces/extractorAbstract.interface";
 
-export const cuisineAZRecipeExtractor = {
+export const cuisineAZRecipeExtractor: IExtractorSource<RecipeModel> = {
   extract: async (
     page: Page,
     RecipeSource: RecipeSourceModel,

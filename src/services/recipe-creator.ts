@@ -1,15 +1,15 @@
 import { RecipeModel } from "@models/recipe/recipe.model";
 
-import { RecipeCreatorFactory } from "@factories/recipe-creator-factory";
+import { recipeCreatorFactory } from "@factories/recipe-creator-factory";
 
-export enum RecipeCreationAppEnum {
+export enum DestinationRecipeAvailableEnum {
   JOW = "jow",
-  GROCY = "grocy",
+  // GROCY = "grocy",
 }
 
 export async function publishRecipeForSource(
   Recipe: RecipeModel,
-  destination: RecipeCreationAppEnum,
+  destination: DestinationRecipeAvailableEnum,
 ): Promise<string> {
-  return RecipeCreatorFactory.create(Recipe, destination);
+  return recipeCreatorFactory.create(Recipe, destination);
 }

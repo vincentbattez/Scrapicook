@@ -1,9 +1,14 @@
-import { IModelAbstract } from "@models/interfaces/modelAbstract.interface";
+import {
+  IConvertibleAbstract,
+  IModelWith,
+} from "@models/interfaces/modelAbstract.interface";
 import { IStep } from "@models/step/step.interface";
 
-import { IJowCreateRecipeBody } from "@queries/jow/interfaces/requests/jowCreateRecipeBody.interface";
+import { recipeConverterFactory } from "@factories/recipe-converter-factory";
 
-export class StepModel implements IModelAbstract<IStep> {
+import { DestinationRecipeAvailableEnum } from "@services/recipe-creator";
+
+export class StepModel implements IModelWith<IStep, IConvertibleAbstract> {
   private readonly step: IStep;
 
   constructor(step: IStep) {
@@ -17,29 +22,19 @@ export class StepModel implements IModelAbstract<IStep> {
     return this.step;
   }
 
-  public toJowRecipe(): IStep {
-    const jowMaxStepLength = 350;
-    const jowStep = this.step;
-
-    if (jowStep.description.length > jowMaxStepLength) {
-      jowStep.description =
-        jowStep.description.slice(0, jowMaxStepLength - 3) + "...";
-
-      console.warn(
-        `Step ${jowStep.step} description is too long. Truncated to ${jowMaxStepLength} characters.`,
-      );
-    }
-
-    return jowStep;
+  convert(availableConverter: DestinationRecipeAvailableEnum) {
+    return recipeConverterFactory.convert(availableConverter).toStep(this);
   }
 }
 
-export class StepListModel implements IModelAbstract<IStep[]> {
+export class StepListModel
+  implements IModelWith<StepModel[], IConvertibleAbstract>
+{
   private readonly step: StepModel[] = [];
   private stepCount: number = 0;
 
-  public get(): IStep[] {
-    return this.step.map((step) => step.get());
+  public get(): StepModel[] {
+    return this.step.map((step) => step);
   }
 
   public pushStep(description: string): void {
@@ -51,14 +46,7 @@ export class StepListModel implements IModelAbstract<IStep[]> {
     );
   }
 
-  public toJowRecipe(): Pick<IJowCreateRecipeBody, "directions"> {
-    return {
-      directions: this.step.map((step) => {
-        return {
-          label: step.toJowRecipe().description,
-          involvedIngredients: [],
-        };
-      }),
-    };
+  convert(availableConverter: DestinationRecipeAvailableEnum) {
+    return recipeConverterFactory.convert(availableConverter).toStepList(this);
   }
 }

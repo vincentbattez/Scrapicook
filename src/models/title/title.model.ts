@@ -1,9 +1,14 @@
-import { IModelAbstract } from "@models/interfaces/modelAbstract.interface";
+import {
+  IConvertibleAbstract,
+  IModelWith,
+} from "@models/interfaces/modelAbstract.interface";
 import { ITitle } from "@models/title/title.interface";
 
-import { IJowCreateRecipeBody } from "@queries/jow/interfaces/requests/jowCreateRecipeBody.interface";
+import { recipeConverterFactory } from "@factories/recipe-converter-factory";
 
-export class TitleModel implements IModelAbstract<ITitle> {
+import { DestinationRecipeAvailableEnum } from "@services/recipe-creator";
+
+export class TitleModel implements IModelWith<ITitle, IConvertibleAbstract> {
   private readonly title: ITitle;
 
   constructor(title: ITitle) {
@@ -14,20 +19,7 @@ export class TitleModel implements IModelAbstract<ITitle> {
     return this.title;
   }
 
-  public toJowRecipe(): Pick<IJowCreateRecipeBody, "title"> {
-    let jowTitle = this.title;
-    const maxJowTitleLength = 50;
-
-    if (jowTitle.length > maxJowTitleLength) {
-      jowTitle = jowTitle.slice(0, maxJowTitleLength - 3) + "...";
-
-      console.warn(
-        `Title is too long. Truncated to ${maxJowTitleLength} characters.`,
-      );
-    }
-
-    return {
-      title: jowTitle,
-    };
+  public convert(availableConverter: DestinationRecipeAvailableEnum) {
+    return recipeConverterFactory.convert(availableConverter).toTitle(this);
   }
 }

@@ -230,4 +230,11 @@ export default [
       globals: globals.node,
     },
   },
+  // Exclude specific files from TypeScript rules
+  {
+    files: ["src/queries/**/*.interface.ts"],
+    rules: {
+      "@typescript-eslint/naming-convention": "off"
+    }
+  },
 ];

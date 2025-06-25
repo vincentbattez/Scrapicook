@@ -1,29 +1,13 @@
 import { RecipeModel } from "@models/recipe/recipe.model.js";
 
-import { IJowCreateRecipeBody } from "@queries/jow/interfaces/requests/jowCreateRecipeBody.interface.js";
+import { IJowCreateRecipeResponse } from "@queries/jow/interfaces/responses/jowCreateRecipeResponse.interface";
 
-export class JowQueries {
-  static async createRecipe(Recipe: RecipeModel) {
-    const recipe = Recipe.get();
-    const body: IJowCreateRecipeBody = {
-      additionalConstituents: [],
-      backgroundPattern: {
-        color: "#075526",
-        imageUrl: "patterns/kale-03.png",
-      },
-      requiredTools: [],
-      placeHolderUrl: "placeholders/plate.png",
-      staticCoversCount: false,
-      userConstituents: [],
-      constituents: [], // @todo: list of ingredients
-      recipeFamily: "", // @todo: c'est quoi ?
-      ...recipe.cookTime.toJowRecipe(),
-      ...recipe.image.toJowRecipe(),
-      ...recipe.astuce.toJowRecipe(),
-      ...recipe.title.toJowRecipe(),
-      ...recipe.numberOfPerson.toJowRecipe(),
-      ...recipe.stepList.toJowRecipe(),
-    };
+import { DestinationRecipeAvailableEnum } from "@services/recipe-creator";
+
+export const jowQueries = {
+  createRecipe(Recipe: RecipeModel): IJowCreateRecipeResponse {
+    // @todo: séparé la creation du call API
+    const body = Recipe.convert(DestinationRecipeAvailableEnum.JOW);
     console.log("body", body);
 
     // const createRecipeResponse = await fetch(process.env.JOW_API_URL + '/recipes/uploaded', {
@@ -49,6 +33,7 @@ export class JowQueries {
     // })
 
     // console.log("createRecipeResponse", createRecipeResponse)
+    // return createRecipeResponse;
     return {};
-  }
-}
+  },
+};

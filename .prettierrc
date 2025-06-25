@@ -15,6 +15,7 @@
   "importOrder": [
     "^@creators/(.*)$",
     "^@models/(.*)$",
+    "^@converters/(.*)$",
     "^@extractors/(.*)$",
     "^@factories/(.*)$",
     "^@queries/(.*)$",

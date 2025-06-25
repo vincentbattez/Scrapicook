@@ -5,9 +5,16 @@ import {
   unitEnum,
   unitMapping,
 } from "@models/ingredient/unit/unit.interface";
-import { IModelAbstract } from "@models/interfaces/modelAbstract.interface";
+import {
+  IConvertibleAbstract,
+  IModelWith,
+} from "@models/interfaces/modelAbstract.interface";
 
-export class UnitModel implements IModelAbstract<IUnit> {
+import { recipeConverterFactory } from "@factories/recipe-converter-factory";
+
+import { DestinationRecipeAvailableEnum } from "@services/recipe-creator";
+
+export class UnitModel implements IModelWith<IUnit, IConvertibleAbstract> {
   private readonly unit: IUnit;
 
   constructor(unit: string | unitEnum | null) {
@@ -35,5 +42,9 @@ export class UnitModel implements IModelAbstract<IUnit> {
 
   public get(): IUnit {
     return this.unit;
+  }
+
+  convert(availableConverter: DestinationRecipeAvailableEnum) {
+    return recipeConverterFactory.convert(availableConverter).toUnit(this);
   }
 }
