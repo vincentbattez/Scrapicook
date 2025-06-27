@@ -6,7 +6,7 @@ import { ITitle } from "@models/title/title.interface";
 
 import { recipeConverterFactory } from "@factories/recipe-converter-factory";
 
-import { DestinationRecipeAvailableEnum } from "@services/recipe-creator";
+import { AvailableCreatorRecipeEnum } from "@services/enums/available-creator-recipe";
 
 export class TitleModel implements IModelWith<ITitle, IConvertibleAbstract> {
   private readonly title: ITitle;
@@ -19,7 +19,7 @@ export class TitleModel implements IModelWith<ITitle, IConvertibleAbstract> {
     return this.title;
   }
 
-  public convert(availableConverter: DestinationRecipeAvailableEnum) {
+  public convert(availableConverter: AvailableCreatorRecipeEnum) {
     return recipeConverterFactory.convert(availableConverter).toTitle(this);
   }
 }

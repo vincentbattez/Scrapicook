@@ -18,10 +18,11 @@ import {
   IJowDirection,
 } from "@queries/jow/interfaces/requests/jowCreateRecipeBody.interface";
 
-import { DestinationRecipeAvailableEnum } from "@services/recipe-creator";
+import { AvailableCreatorRecipeEnum } from "@services/enums/available-creator-recipe";
 
-// @todo: convert to class to save "DestinationRecipeAvailableEnum.JOW" in the constructor
-export const jowConverter: IAbstractConverter = {
+export class JowConverter implements IAbstractConverter {
+  private readonly creatorEnum = AvailableCreatorRecipeEnum.JOW;
+
   toTitle(titleModel: TitleModel): Pick<IJowCreateRecipeBody, "title"> {
     const title = titleModel.get();
     const maxJowTitleLength = 50;
@@ -41,7 +42,8 @@ export const jowConverter: IAbstractConverter = {
     return {
       title: truncated,
     };
-  },
+  }
+
   toAstuce(astuceModel: AstuceModel): Pick<IJowCreateRecipeBody, "tip"> {
     const jowMaxAstuceLength = 350;
     let jowAstuce = astuceModel.get();
@@ -67,7 +69,8 @@ export const jowConverter: IAbstractConverter = {
         description: jowAstuce,
       },
     };
-  },
+  }
+
   toCookTime(
     cookTimeModel: CookTimeModel,
   ): Pick<
@@ -85,31 +88,37 @@ export const jowConverter: IAbstractConverter = {
         ? String(cookTimeModel.get().rest.value)
         : "",
     };
-  },
-  toIngredient: function (ingredientModel: IngredientModel) {
+  }
+
+  toIngredient(ingredientModel: IngredientModel) {
     // @todo: do it
     throw new Error("Function not implemented.");
-  },
-  toUnit: function (unitModel: UnitModel) {
+  }
+
+  toUnit(unitModel: UnitModel) {
     // @todo: do it
     throw new Error("Function not implemented.");
-  },
+  }
+
   toIngredientList(ingredientListModel: IngredientListModel): unknown {
     // @todo: do it
     throw new Error("Function not implemented.");
-  },
+  }
+
   toImage(imageModel: ImageModel): Pick<IJowCreateRecipeBody, "imageUrl"> {
     return {
       imageUrl: imageModel.get() ?? "",
     };
-  },
+  }
+
   toNumberOfPerson(
     numberOfPersonModel: NumberOfPersonModel,
   ): Pick<IJowCreateRecipeBody, "userCoversCount"> {
     return {
       userCoversCount: numberOfPersonModel.get(),
     };
-  },
+  }
+
   toRecipe(recipeModel: RecipeModel): IJowCreateRecipeBody {
     const recipe = recipeModel.get();
 
@@ -125,14 +134,15 @@ export const jowConverter: IAbstractConverter = {
       userConstituents: [],
       constituents: [], // @todo: list of ingredients
       recipeFamily: "", // @todo: c'est quoi ?
-      ...recipe.cookTime.convert(DestinationRecipeAvailableEnum.JOW),
-      ...recipe.image.convert(DestinationRecipeAvailableEnum.JOW),
-      ...recipe.astuce.convert(DestinationRecipeAvailableEnum.JOW),
-      ...recipe.title.convert(DestinationRecipeAvailableEnum.JOW),
-      ...recipe.numberOfPerson.convert(DestinationRecipeAvailableEnum.JOW),
-      ...recipe.stepList.convert(DestinationRecipeAvailableEnum.JOW),
+      ...recipe.cookTime.convert(this.creatorEnum),
+      ...recipe.image.convert(this.creatorEnum),
+      ...recipe.astuce.convert(this.creatorEnum),
+      ...recipe.title.convert(this.creatorEnum),
+      ...recipe.numberOfPerson.convert(this.creatorEnum),
+      ...recipe.stepList.convert(this.creatorEnum),
     };
-  },
+  }
+
   toStep(stepModel: StepModel): IJowDirection {
     const jowMaxStepLength = 350;
     const jowStep = stepModel.get();
@@ -150,14 +160,15 @@ export const jowConverter: IAbstractConverter = {
       label: jowStep.description,
       involvedIngredients: [],
     };
-  },
+  }
+
   toStepList(
     stepListModel: StepListModel,
   ): Pick<IJowCreateRecipeBody, "directions"> {
     return {
       directions: stepListModel.get().map((stepModel) => {
-        return stepModel.convert(DestinationRecipeAvailableEnum.JOW);
+        return stepModel.convert(this.creatorEnum);
       }),
     };
-  },
-};
+  }
+}

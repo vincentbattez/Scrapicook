@@ -13,6 +13,7 @@
   "singleAttributePerLine": true,
   "multilineArraysWrapThreshold": -1,
   "importOrder": [
+    "^@controllers/(.*)$",
     "^@creators/(.*)$",
     "^@models/(.*)$",
     "^@converters/(.*)$",
@@ -20,6 +21,7 @@
     "^@factories/(.*)$",
     "^@queries/(.*)$",
     "^@services/(.*)$",
+    "^@prisma/(.*)$",
     "^@utils/(.*)$",
     "^[./]"
   ],

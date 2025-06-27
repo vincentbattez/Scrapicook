@@ -1,11 +1,10 @@
-import { DestinationRecipeAvailableEnum } from "@services/recipe-creator";
+import { AvailableCreatorRecipeEnum } from "@services/enums/available-creator-recipe";
 
 export interface IModelAbstract<T> {
   get(): T;
 }
 
-// TEnum can be "DestinationRecipeAvailableEnum"
-export interface IConvertibleAbstract<TEnum = DestinationRecipeAvailableEnum> {
+export interface IConvertibleAbstract<TEnum = AvailableCreatorRecipeEnum> {
   // @todo: how to type this?
   convert(availableConverter: TEnum): any;
 }

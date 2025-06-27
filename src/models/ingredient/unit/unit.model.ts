@@ -12,7 +12,7 @@ import {
 
 import { recipeConverterFactory } from "@factories/recipe-converter-factory";
 
-import { DestinationRecipeAvailableEnum } from "@services/recipe-creator";
+import { AvailableCreatorRecipeEnum } from "@services/enums/available-creator-recipe";
 
 export class UnitModel implements IModelWith<IUnit, IConvertibleAbstract> {
   private readonly unit: IUnit;
@@ -44,7 +44,7 @@ export class UnitModel implements IModelWith<IUnit, IConvertibleAbstract> {
     return this.unit;
   }
 
-  convert(availableConverter: DestinationRecipeAvailableEnum) {
+  convert(availableConverter: AvailableCreatorRecipeEnum) {
     return recipeConverterFactory.convert(availableConverter).toUnit(this);
   }
 }

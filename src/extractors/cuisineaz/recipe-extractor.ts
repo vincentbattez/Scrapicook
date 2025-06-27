@@ -10,13 +10,15 @@ import { cuisineAZIngredientExtractor } from "@extractors/cuisineaz/ingredient.e
 import { cuisineAZNumberOfPersonExtractor } from "@extractors/cuisineaz/numberOfPerson.extractor";
 import { cuisineAZStepExtractor } from "@extractors/cuisineaz/step.extractor";
 import { cuisineAZTitleExtractor } from "@extractors/cuisineaz/title.extractor";
-import { IExtractorSource } from "@extractors/interfaces/extractorAbstract.interface";
+import { IExtractorWithSource } from "@extractors/interfaces/common/extractorAbstract.interface";
 
-export const cuisineAZRecipeExtractor: IExtractorSource<RecipeModel> = {
-  extract: async (
+export class CuisineAZRecipeExtractor
+  implements IExtractorWithSource<RecipeModel>
+{
+  async extract(
     page: Page,
     RecipeSource: RecipeSourceModel,
-  ): Promise<RecipeModel> => {
+  ): Promise<RecipeModel> {
     return new RecipeModel({
       title: await cuisineAZTitleExtractor.extract(page),
       image: await cuisineAZImageExtractor.extract(page),
@@ -27,5 +29,5 @@ export const cuisineAZRecipeExtractor: IExtractorSource<RecipeModel> = {
       astuce: await cuisineAZAstuceExtractor.extract(page),
       recipeSource: RecipeSource,
     });
-  },
-};
+  }
+}

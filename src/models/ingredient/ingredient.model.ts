@@ -8,7 +8,7 @@ import {
 
 import { recipeConverterFactory } from "@factories/recipe-converter-factory";
 
-import { DestinationRecipeAvailableEnum } from "@services/recipe-creator";
+import { AvailableCreatorRecipeEnum } from "@services/enums/available-creator-recipe";
 
 export class IngredientModel
   implements IModelWith<IIngredient, IConvertibleAbstract>
@@ -50,7 +50,7 @@ export class IngredientModel
     };
   }
 
-  convert(availableConverter: DestinationRecipeAvailableEnum) {
+  convert(availableConverter: AvailableCreatorRecipeEnum) {
     return recipeConverterFactory
       .convert(availableConverter)
       .toIngredient(this);
@@ -84,7 +84,7 @@ export class IngredientListModel
     );
   }
 
-  convert(availableConverter: DestinationRecipeAvailableEnum) {
+  convert(availableConverter: AvailableCreatorRecipeEnum) {
     return recipeConverterFactory
       .convert(availableConverter)
       .toIngredientList(this);

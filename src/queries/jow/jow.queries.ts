@@ -2,12 +2,12 @@ import { RecipeModel } from "@models/recipe/recipe.model.js";
 
 import { IJowCreateRecipeResponse } from "@queries/jow/interfaces/responses/jowCreateRecipeResponse.interface";
 
-import { DestinationRecipeAvailableEnum } from "@services/recipe-creator";
+import { AvailableCreatorRecipeEnum } from "@services/enums/available-creator-recipe";
 
 export const jowQueries = {
   createRecipe(Recipe: RecipeModel): IJowCreateRecipeResponse {
     // @todo: séparé la creation du call API
-    const body = Recipe.convert(DestinationRecipeAvailableEnum.JOW);
+    const body = Recipe.convert(AvailableCreatorRecipeEnum.JOW);
     console.log("body", body);
 
     // const createRecipeResponse = await fetch(process.env.JOW_API_URL + '/recipes/uploaded', {

@@ -6,7 +6,7 @@ import { IStep } from "@models/step/step.interface";
 
 import { recipeConverterFactory } from "@factories/recipe-converter-factory";
 
-import { DestinationRecipeAvailableEnum } from "@services/recipe-creator";
+import { AvailableCreatorRecipeEnum } from "@services/enums/available-creator-recipe";
 
 export class StepModel implements IModelWith<IStep, IConvertibleAbstract> {
   private readonly step: IStep;
@@ -22,7 +22,7 @@ export class StepModel implements IModelWith<IStep, IConvertibleAbstract> {
     return this.step;
   }
 
-  convert(availableConverter: DestinationRecipeAvailableEnum) {
+  convert(availableConverter: AvailableCreatorRecipeEnum) {
     return recipeConverterFactory.convert(availableConverter).toStep(this);
   }
 }
@@ -46,7 +46,7 @@ export class StepListModel
     );
   }
 
-  convert(availableConverter: DestinationRecipeAvailableEnum) {
+  convert(availableConverter: AvailableCreatorRecipeEnum) {
     return recipeConverterFactory.convert(availableConverter).toStepList(this);
   }
 }

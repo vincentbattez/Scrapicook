@@ -254,7 +254,7 @@ graph TD
     %% Features
     NORMALIZE_RECIPE --> EXPORT
 
-    %% Destination
+    %% Target
     EXPORT --> GSY_RECIPE
     EXPORT --> JOW_RECIPE
 ```

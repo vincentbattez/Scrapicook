@@ -1,18 +1,10 @@
 import { Page } from "@playwright/test";
 
-import { ExtractorRecipeAvailableEnum } from "@models/recipe-source/recipe-source.model";
 import { RecipeModel } from "@models/recipe/recipe.model";
 
 import { recipeSourceExtractor } from "@extractors/common/recipeSource.extractor";
-import { cuisineAZRecipeExtractor } from "@extractors/cuisineaz/recipe-extractor";
-import { IExtractorSource } from "@extractors/interfaces/extractorAbstract.interface";
 
-const availableExtractorMapping: Record<
-  ExtractorRecipeAvailableEnum,
-  IExtractorSource<RecipeModel>
-> = {
-  [ExtractorRecipeAvailableEnum.CUISINEAZ]: cuisineAZRecipeExtractor,
-};
+import { availableExtractorMapping } from "@services/enums/available-extractor-recipe";
 
 export const recipeExtractorFactory = {
   extract: async (page: Page): Promise<RecipeModel> => {

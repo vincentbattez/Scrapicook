@@ -1,0 +1,121 @@
+Project etl_system {
+  database_type: 'PostgreSQL'
+  Note: '''
+    Système ETL pour synchronisation multi-sources
+    Sources supportées: Grocy
+    Targets supportés: Jow, Grocy
+  '''
+}
+
+// Source
+Table source.ingredients [headercolor: #047429] {
+  ~base_template
+  external_id varchar [not null, note: 'id of the external ingredient']
+  ~base_ingredient
+  source varchar [not null, note: "grocy..."]
+  ~base_date
+
+  Indexes {
+    (external_id) [pk]
+  }
+}
+
+Table source.units [headercolor: #047429] {
+  ~base_template
+  external_id varchar [not null, note: 'id of the external unit']
+  ~base_unit
+  source varchar [not null, note: "grocy..."]
+  ~base_date
+
+  Indexes {
+    (external_id) [pk]
+  }
+}
+
+
+// Jointure
+Table source_target_ingredients {
+  ~base_template
+  ~source_ingredient
+  ~target_ingredient
+  ~base_source_target
+  ~base_date
+}
+
+
+Table source_target_units {
+  ~base_template
+  ~source_unit
+  ~target_unit
+  ~base_source_target
+  ~base_date
+}
+
+
+// Target
+Table target.ingredients [headercolor: #6631D7] {
+  ~base_template
+  external_id varchar [not null, note: 'id of the external ingredient']
+  ~base_ingredient
+  target varchar [not null, note: "jow, grocy..."]
+  ~base_date
+
+  Indexes {
+    (external_id) [pk]
+  }
+}
+
+Table target.units [headercolor: #6631D7] {
+  ~base_template
+  external_id varchar [not null, note: 'id of the external unit']
+  ~base_unit
+  target varchar [not null, note: "jow, grocy..."]
+  ~base_date
+
+  Indexes {
+    (external_id) [pk]
+  }
+}
+
+
+
+// Partials
+TablePartial base_template {
+  id uuid [pk, not null, default: 'gen_random_uuid()']
+
+  Indexes {
+    (id) [pk]
+  }
+}
+TablePartial base_date {
+  created_at timestamptz [default: 'now()', not null]
+  updated_at timestamptz [default: 'now()', not null]
+}
+TablePartial base_source_target {
+  confidence_score decimal(3,2) [not null, note: "Mapping trust score"]
+  mapping_method varchar [not null, note: 'human, fussyV1, chatGPT...']
+}
+
+
+// Unit
+TablePartial base_unit {
+  label varchar [not null]
+}
+TablePartial source_unit {
+  source_id varchar [ref: > source.units.id, not null]
+}
+TablePartial target_unit {
+  target_id varchar [ref: > target.units.id, not null]
+}
+
+// Ingredients
+TablePartial base_ingredient {
+  label varchar [not null]
+}
+TablePartial source_ingredient {
+  source_id varchar [ref: > source.ingredients.id, not null]
+}
+TablePartial target_ingredient {
+  target_id varchar [ref: > target.ingredients.id, not null]
+}
+

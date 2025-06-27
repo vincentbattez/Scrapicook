@@ -6,7 +6,7 @@ import { IJSONRecipe, IRecipe } from "@models/recipe/recipe.interface";
 
 import { recipeConverterFactory } from "@factories/recipe-converter-factory";
 
-import { DestinationRecipeAvailableEnum } from "@services/recipe-creator";
+import { AvailableCreatorRecipeEnum } from "@services/enums/available-creator-recipe";
 
 export class RecipeModel implements IModelWith<IRecipe, IConvertibleAbstract> {
   private readonly recipe: IRecipe;
@@ -32,7 +32,7 @@ export class RecipeModel implements IModelWith<IRecipe, IConvertibleAbstract> {
     };
   }
 
-  convert(availableConverter: DestinationRecipeAvailableEnum) {
+  convert(availableConverter: AvailableCreatorRecipeEnum) {
     return recipeConverterFactory.convert(availableConverter).toRecipe(this);
   }
 }

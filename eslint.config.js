@@ -105,6 +105,9 @@ export default [
     },
     ignores: [
       "eslint.config.js",
+      "generated/**",
+      "prisma/generated/**",
+      "prisma/db/**",
       "*~",
       ".fuse_hidden*",
       ".directory",

@@ -6,7 +6,7 @@ import {
 
 import { recipeConverterFactory } from "@factories/recipe-converter-factory";
 
-import { DestinationRecipeAvailableEnum } from "@services/recipe-creator";
+import { AvailableCreatorRecipeEnum } from "@services/enums/available-creator-recipe";
 
 export class ImageModel implements IModelWith<IImage, IConvertibleAbstract> {
   private readonly image: IImage;
@@ -19,7 +19,7 @@ export class ImageModel implements IModelWith<IImage, IConvertibleAbstract> {
     return this.image;
   }
 
-  convert(availableConverter: DestinationRecipeAvailableEnum) {
+  convert(availableConverter: AvailableCreatorRecipeEnum) {
     return recipeConverterFactory.convert(availableConverter).toImage(this);
   }
 }

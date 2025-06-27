@@ -5,7 +5,7 @@ import { IModelAbstract } from "@models/interfaces/modelAbstract.interface";
 
 import { recipeConverterFactory } from "@factories/recipe-converter-factory";
 
-import { DestinationRecipeAvailableEnum } from "@services/recipe-creator";
+import { AvailableCreatorRecipeEnum } from "@services/enums/available-creator-recipe";
 
 export class CookTimeModel implements IModelAbstract<ICookTime> {
   private readonly cooktime: ICookTime = {
@@ -61,7 +61,7 @@ export class CookTimeModel implements IModelAbstract<ICookTime> {
     this.cooktime[key].unit = normalizedUnit;
   }
 
-  convert(availableConverter: DestinationRecipeAvailableEnum) {
+  convert(availableConverter: AvailableCreatorRecipeEnum) {
     return recipeConverterFactory.convert(availableConverter).toCookTime(this);
   }
 }

@@ -1,20 +1,13 @@
 import { IAbstractConverter } from "@converters/interfaces/AbstractConverter.interface";
-import { jowConverter } from "@converters/jow.converter";
 
-import { DestinationRecipeAvailableEnum } from "@services/recipe-creator";
-
-const availableConverterMapping: Record<
-  DestinationRecipeAvailableEnum,
-  IAbstractConverter
-> = {
-  [DestinationRecipeAvailableEnum.JOW]: jowConverter,
-};
+import { availableConverterMapping } from "@services/enums/available-converter-recipe";
+import { AvailableCreatorRecipeEnum } from "@services/enums/available-creator-recipe";
 
 export const recipeConverterFactory = {
-  convert: (converter: DestinationRecipeAvailableEnum): IAbstractConverter => {
+  convert: (converter: AvailableCreatorRecipeEnum): IAbstractConverter => {
     // Check if the converter is supported
     if (!availableConverterMapping[converter]) {
-      throw new Error(`Destination recipe "${converter}" is not supported`);
+      throw new Error(`Target recipe "${converter}" is not supported`);
     }
 
     console.log(`🌟 Use "${converter}" converter`);
