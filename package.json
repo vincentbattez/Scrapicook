@@ -1,17 +1,20 @@
 {
   "name": "scrapicook",
   "version": "0.0.1",
-  "main": "index.js",
-  "type": "module",
+  "main": "src/server.ts",
   "scripts": {
-    "lint": "eslint --cache --cache-location ./node_modules/.cache/eslint .",
+    "lint": "eslint .",
     "lint:fix": "eslint --fix",
-    "format": "prettier --write 'src/**/*.{ts,tsx,js,jsx,json,md}'"
+    "format": "prettier --write 'src/**/*.{ts,tsx,js,jsx,json,md}'",
+    "test": "node --test test/**/*.test.js",
+    "build": "tsc -p tsconfig.json",
+    "start": "fastify start -l info src/server.ts",
+    "dev": "tsx watch src/server.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
+  "description": "This project was bootstrapped with Fastify-CLI.",
   "sourcemap": true,
   "devDependencies": {
     "@playwright/test": "^1.52.0",
@@ -25,9 +28,23 @@
     "eslint-plugin-prettier": "^5.4.0",
     "prettier": "^3.5.3",
     "prettier-plugin-multiline-arrays": "^4.0.3",
+    "prisma": "^6.8.2",
     "typescript": "^5.8.3"
   },
   "dependencies": {
-    "playwright": "^1.52.0"
+    "@fastify/autoload": "^6.0.0",
+    "@fastify/sensible": "^6.0.0",
+    "@fastify/type-provider-json-schema-to-ts": "^5.0.0",
+    "@prisma/client": "^6.8.2",
+    "ajv": "^8.17.1",
+    "fastify": "^5.0.0",
+    "fastify-cli": "^7.4.0",
+    "fastify-plugin": "^5.0.0",
+    "fuse.js": "^7.1.0",
+    "playwright": "^1.52.0",
+    "tsx": "^4.20.3"
+  },
+  "directories": {
+    "test": "tests"
   }
 }

@@ -1,0 +1,43 @@
+export const extractRecipe200ResponseSchema = {
+  title: "Schema of the params to get quote history request",
+  type: "array",
+  items: {
+    type: "object",
+    properties: {
+      id: { type: "number" },
+      shopId: { type: "string" },
+      // input: generateQuoteBodySchema,
+      // output: quoteResponse,
+      quoteId: { type: "string" },
+      workorderId: { type: "string" },
+      apiVersion: { type: "string" },
+      generationStatus: { type: "number" },
+      mode: { type: "string" },
+      saleAssistance: { type: "boolean" },
+      automatedUniverses: {
+        type: "array",
+        description: "List activated universe",
+        items: {
+          type: "string",
+        },
+      },
+      createdAt: { type: "string" },
+      updatedAt: { type: "string" },
+    },
+    required: [
+      "id",
+      "shopId",
+      "input",
+      "output",
+      "quoteId",
+      "workorderId",
+      "apiVersion",
+      "generationStatus",
+      "mode",
+      "saleAssistance",
+      "automatedUniverses",
+      "createdAt",
+      "updatedAt",
+    ],
+  },
+};

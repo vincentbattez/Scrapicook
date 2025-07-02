@@ -8,6 +8,7 @@
     "moduleResolution": "node",
     "esModuleInterop": true,
     "strict": true,
+    "noStrictGenericChecks": false,
     "resolveJsonModule": true,
     "removeComments": true,
     "newLine": "lf",
@@ -25,6 +26,7 @@
     "sourceMap": true,
     "useUnknownInCatchVariables": false,
     "paths": {
+      "@controllers/*": ["src/controllers/*"],
       "@creators/*": ["src/creators/*"],
       "@models/*": ["src/models/*"],
       "@converters/*": ["src/converters/*"],
@@ -33,6 +35,7 @@
       "@queries/*": ["src/queries/*"],
       "@services/*": ["src/services/*"],
       "@utils/*": ["src/utils/*"],
+      "@prisma/*": ["prisma/*"],
       "@src/*": ["src/*"],
       "@tests/*": ["tests/*"]
     },

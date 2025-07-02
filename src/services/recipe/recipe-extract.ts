@@ -18,7 +18,7 @@ export const recipeExtractorService = {
     const browser = await chromium.launch();
     const page = await browser.newPage();
 
-    console.log(request);
+    console.log(request.query);
 
     await page.goto(
       "https://www.cuisineaz.com/recettes/tzatziki-facile-17295.aspx",
