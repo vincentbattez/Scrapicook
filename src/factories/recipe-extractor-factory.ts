@@ -1,4 +1,5 @@
 import { Page } from "@playwright/test";
+import { logger } from "@src/server";
 
 import { RecipeModel } from "@models/recipe/recipe.model";
 
@@ -18,7 +19,7 @@ export const recipeExtractorFactory = {
     }
 
     // Choose the extractor based on the source
-    console.log(`🌟 Extract ${source} recipe`);
+    logger.info(`🌟 Extract ${source} recipe`);
 
     return availableExtractorMapping[source].extract(page, RecipeSource);
   },

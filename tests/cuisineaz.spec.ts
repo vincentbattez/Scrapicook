@@ -1,5 +1,6 @@
 import { test } from "@playwright/test";
 import { PrismaService } from "@src/database/prismaClient";
+import { logger } from "@src/server";
 
 import { AvailableCreatorRecipeEnum } from "@services/enums/available-creator-recipe";
 import { publishRecipeForSource } from "@services/recipe/recipe-creator";
@@ -8,7 +9,7 @@ import { recipeParser } from "@services/recipe/recipe-parser";
 test("cuisineaz recipe", async ({ page }) => {
   const prisma = new PrismaService();
 
-  console.log("✅ prisma()", prisma);
+  logger.info("✅ prisma()", prisma);
 });
 
 test("get started link", async ({ page }) => {
@@ -17,14 +18,14 @@ test("get started link", async ({ page }) => {
   );
   const Recipe = await recipeParser.parseRecipeFromPage(page);
 
-  console.log("📖", Recipe.toJSONRecipe());
+  logger.info("📖", Recipe.toJSONRecipe());
 
   // @todo: expect to recipe has well all the properties
-  console.log(Recipe.get().title.convert(AvailableCreatorRecipeEnum.JOW));
+  logger.info(Recipe.get().title.convert(AvailableCreatorRecipeEnum.JOW));
 
   const publishResponse = await publishRecipeForSource(
     Recipe,
     AvailableCreatorRecipeEnum.JOW,
   );
-  console.log("✅", publishResponse);
+  logger.info("✅", publishResponse);
 });

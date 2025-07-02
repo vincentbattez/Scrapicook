@@ -1,4 +1,5 @@
 import { Page } from "@playwright/test";
+import { logger } from "@src/server";
 import { stringUtils } from "@src/utils/string";
 
 import { ICookTime } from "@models/cooktime/cooktime.interface";
@@ -38,7 +39,7 @@ export const cuisineAZCookTimeExtractor: ICooktimeExtractor = {
             targetWordList: targetTitleList,
           });
         } catch (e) {
-          console.warn(e);
+          logger.warn(e);
 
           return acc;
         }

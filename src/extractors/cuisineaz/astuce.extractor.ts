@@ -1,4 +1,5 @@
 import { Page } from "@playwright/test";
+import { logger } from "@src/server";
 import { stringUtils } from "@src/utils/string";
 
 import { AstuceModel } from "@models/astuce/astuce.model";
@@ -20,7 +21,7 @@ export const cuisineAZAstuceExtractor: IAstuceExtractor = {
         targetWordList: CUISINEAZ_ASTUCE_TITLE_LIST,
       });
     } catch (e) {
-      console.warn(e);
+      logger.warn(e);
 
       return new AstuceModel(null);
     }

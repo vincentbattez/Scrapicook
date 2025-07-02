@@ -1,3 +1,5 @@
+import { logger } from "@src/server";
+
 import { IAbstractConverter } from "@converters/interfaces/AbstractConverter.interface";
 
 import { availableConverterMapping } from "@services/enums/available-converter-recipe";
@@ -10,7 +12,7 @@ export const recipeConverterFactory = {
       throw new Error(`Target recipe "${converter}" is not supported`);
     }
 
-    console.log(`🌟 Use "${converter}" converter`);
+    logger.info(`🌟 Use "${converter}" converter`);
 
     return availableConverterMapping[converter];
   },

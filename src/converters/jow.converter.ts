@@ -1,3 +1,5 @@
+import { logger } from "@src/server";
+
 import { AstuceModel } from "@models/astuce/astuce.model";
 import { CookTimeModel } from "@models/cooktime/cooktime.model";
 import { ImageModel } from "@models/image/image.model";
@@ -35,7 +37,7 @@ export class JowConverter implements IAbstractConverter {
 
     const truncated = title.slice(0, maxJowTitleLength - 3) + "...";
 
-    console.warn(
+    logger.warn(
       `Title is too long. Truncated to ${maxJowTitleLength} characters.`,
     );
 
@@ -59,7 +61,7 @@ export class JowConverter implements IAbstractConverter {
     if (jowAstuce.length > jowMaxAstuceLength) {
       jowAstuce = jowAstuce.slice(0, jowMaxAstuceLength - 3) + "...";
 
-      console.warn(
+      logger.warn(
         `Astuce description is too long. Truncated to ${jowMaxAstuceLength} characters.`,
       );
     }
@@ -151,7 +153,7 @@ export class JowConverter implements IAbstractConverter {
       jowStep.description =
         jowStep.description.slice(0, jowMaxStepLength - 3) + "...";
 
-      console.warn(
+      logger.warn(
         `Step ${jowStep.step} description is too long. Truncated to ${jowMaxStepLength} characters.`,
       );
     }

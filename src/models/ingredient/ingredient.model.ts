@@ -1,3 +1,5 @@
+import { logger } from "@src/server";
+
 import { IIngredient } from "@models/ingredient/ingredient.interface";
 import { unitEnum } from "@models/ingredient/unit/unit.interface";
 import { UnitModel } from "@models/ingredient/unit/unit.model";
@@ -23,13 +25,13 @@ export class IngredientModel
     unit: string | null;
   }) {
     if (!ingredient.quantity) {
-      console.warn(
+      logger.warn(
         `Ingredient "${ingredient.label}" has no quantity. Defaulting to null.`,
       );
     }
 
     if (!ingredient.unit) {
-      console.warn(
+      logger.warn(
         `Ingredient "${ingredient.label}" has no unit. Defaulting to "pièce".`,
       );
     }

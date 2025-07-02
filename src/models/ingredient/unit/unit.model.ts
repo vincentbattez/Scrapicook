@@ -1,3 +1,4 @@
+import { logger } from "@src/server";
 import { stringUtils } from "@src/utils/string";
 
 import {
@@ -19,7 +20,7 @@ export class UnitModel implements IModelWith<IUnit, IConvertibleAbstract> {
 
   constructor(unit: string | unitEnum | null) {
     if (!unit) {
-      console.warn(`Unit "${unit}" is not defined. Defaulting to null.`);
+      logger.warn(`Unit "${unit}" is not defined. Defaulting to null.`);
       this.unit = null;
 
       return;
@@ -31,7 +32,7 @@ export class UnitModel implements IModelWith<IUnit, IConvertibleAbstract> {
         targetWordList: [unit],
       }).length
     ) {
-      console.warn(`Unit "${unit}" is not a valid unit. Defaulting to null.`);
+      logger.warn(`Unit "${unit}" is not a valid unit. Defaulting to null.`);
       this.unit = null;
 
       return;

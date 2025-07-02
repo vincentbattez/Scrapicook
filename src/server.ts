@@ -1,12 +1,17 @@
+/* eslint-disable prettier/prettier */
+import "./metric";
 import { JsonSchemaToTsProvider } from "@fastify/type-provider-json-schema-to-ts";
 import Ajv from "ajv";
 import fastify from "fastify";
 
 import { app } from "./app";
+import {envToLogger} from "@src/logger";
+
+const environment: string = process.env.NODE_ENV ?? "development";
 
 // Instantiate Fastify with logger
 const fastifyApp = fastify({
-  logger: true,
+  logger: envToLogger[environment as keyof typeof envToLogger] || true,
 }).withTypeProvider<JsonSchemaToTsProvider>();
 
 // const prismaClient: PrismaClient = new PrismaService().database;
@@ -37,8 +42,9 @@ const ajv = new Ajv({
     fastifyApp.log.info(`NODE_ENV = ${process.env.NODE_ENV}`);
     fastifyApp.log.info(`${fastifyApp.printRoutes()}`);
   } catch (error) {
-    console.log("❌ server error:", error);
-    fastifyApp.log.error(error);
+    fastifyApp.log.error("❌ server error:", error);
     process.exit(1);
   }
 })();
+
+export const logger = fastifyApp.log;

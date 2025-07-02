@@ -1,3 +1,4 @@
+import { logger } from "@src/server";
 import { type FastifyRequest } from "fastify";
 import { chromium } from "playwright";
 
@@ -18,22 +19,22 @@ export const recipeExtractorService = {
     const browser = await chromium.launch();
     const page = await browser.newPage();
 
-    console.log(request.query);
+    logger.info(request.query);
 
     await page.goto(
       "https://www.cuisineaz.com/recettes/tzatziki-facile-17295.aspx",
     );
     const Recipe = await recipeParser.parseRecipeFromPage(page);
 
-    console.log("📖", Recipe.toJSONRecipe());
+    logger.info("📖", Recipe.toJSONRecipe());
 
     // @todo: expect to recipe has well all the properties
-    console.log(Recipe.get().title.convert(AvailableCreatorRecipeEnum.JOW));
+    logger.info(Recipe.get().title.convert(AvailableCreatorRecipeEnum.JOW));
 
     const publishResponse = await publishRecipeForSource(
       Recipe,
       AvailableCreatorRecipeEnum.JOW,
     );
-    console.log("✅", publishResponse);
+    logger.info("✅", publishResponse);
   },
 };

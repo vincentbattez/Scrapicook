@@ -1,3 +1,5 @@
+import { logger } from "@src/server";
+
 import { RecipeModel } from "@models/recipe/recipe.model.js";
 
 import { IJowCreateRecipeResponse } from "@queries/jow/interfaces/responses/jowCreateRecipeResponse.interface";
@@ -8,7 +10,7 @@ export const jowQueries = {
   createRecipe(Recipe: RecipeModel): IJowCreateRecipeResponse {
     // @todo: séparé la creation du call API
     const body = Recipe.convert(AvailableCreatorRecipeEnum.JOW);
-    console.log("body", body);
+    logger.info("body", body);
 
     // const createRecipeResponse = await fetch(process.env.JOW_API_URL + '/recipes/uploaded', {
     //   method: 'POST',
@@ -32,7 +34,7 @@ export const jowQueries = {
     //   }),
     // })
 
-    // console.log("createRecipeResponse", createRecipeResponse)
+    // logger.info("createRecipeResponse", createRecipeResponse)
     // return createRecipeResponse;
     return {};
   },

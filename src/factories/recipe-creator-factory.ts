@@ -1,3 +1,5 @@
+import { logger } from "@src/server";
+
 import { RecipeModel } from "@models/recipe/recipe.model";
 
 import {
@@ -12,7 +14,7 @@ export const recipeCreatorFactory = {
       throw new Error(`Target recipe "${target}" is not supported`);
     }
 
-    console.log(`🌟 Create ${target} target recipe`);
+    logger.info(`🌟 Create ${target} target recipe`);
 
     return availableCreatorMapping[target].create(Recipe);
   },

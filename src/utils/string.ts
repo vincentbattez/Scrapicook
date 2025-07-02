@@ -1,3 +1,5 @@
+import { logger } from "@src/server";
+
 export const stringUtils = {
   normalizeString(stringList: string): string {
     return stringList
@@ -70,7 +72,7 @@ export const stringUtils = {
     }
 
     if (matchingStringList.length > 1) {
-      console.trace(
+      logger.trace(
         `multiple matching strings found (${matchingStringList.length}) for "${targetWordList}. Using the first one"`,
       );
     }
