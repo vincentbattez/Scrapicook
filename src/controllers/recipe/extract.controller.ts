@@ -48,7 +48,6 @@ const extractRecipeController: FastifyPluginAsync = async (
     },
     async (request, reply) => {
       try {
-        const query = request.query as IExtractRecipeQuery;
         const response = await recipeExtractorService.extractRecipeFromPage({
           request,
         });
