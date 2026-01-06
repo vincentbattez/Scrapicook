@@ -2,10 +2,18 @@ import { Page } from "@playwright/test";
 
 import { IngredientListModel } from "@models/ingredient/ingredient.model";
 
+import { AbstractExtractor } from "@extractors/interfaces/common/extractorAbstract.interface";
 import { IIngredientsExtractor } from "@extractors/interfaces/ingredients-extractor.interface";
 
-export const cuisineAZIngredientExtractor: IIngredientsExtractor = {
-  extract: async (page: Page): Promise<IngredientListModel> => {
+export class CuisineAZIngredientExtractor
+  extends AbstractExtractor<IngredientListModel>
+  implements IIngredientsExtractor
+{
+  constructor() {
+    super("ingredient");
+  }
+
+  protected async doExtract(page: Page): Promise<IngredientListModel> {
     await page.waitForSelector(".ingredient_list");
     const ingredientLocator = await page.locator(".ingredient_list");
 
@@ -32,5 +40,7 @@ export const cuisineAZIngredientExtractor: IIngredientsExtractor = {
     });
 
     return IngredientList;
-  },
-};
+  }
+}
+
+export const cuisineAZIngredientExtractor = new CuisineAZIngredientExtractor();

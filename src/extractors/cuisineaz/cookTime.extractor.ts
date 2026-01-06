@@ -5,14 +5,22 @@ import { stringUtils } from "@src/utils/string";
 import { ICookTime } from "@models/cooktime/cooktime.interface";
 import { CookTimeModel } from "@models/cooktime/cooktime.model";
 
+import { AbstractExtractor } from "@extractors/interfaces/common/extractorAbstract.interface";
 import { ICooktimeExtractor } from "@extractors/interfaces/cooktime-extractor.interface";
 
 const CUISINEAZ_COOKTIME_PREPARATION_TITLE_LIST = ["preparation"];
 const CUISINEAZ_COOKTIME_COOKING_TITLE_LIST = ["cuisson"];
 const CUISINEAZ_COOKTIME_REST_TITLE_LIST = ["repos"];
 
-export const cuisineAZCookTimeExtractor: ICooktimeExtractor = {
-  extract: async (page: Page): Promise<CookTimeModel> => {
+export class CuisineAZCookTimeExtractor
+  extends AbstractExtractor<CookTimeModel>
+  implements ICooktimeExtractor
+{
+  constructor() {
+    super("cookTime");
+  }
+
+  protected async doExtract(page: Page): Promise<CookTimeModel> {
     const cookTimeLocator = page.locator(".recipe_time_informations_container");
     const cookTimeTitleList = await cookTimeLocator
       .locator(".recipe_time_information_title")
@@ -64,5 +72,7 @@ export const cuisineAZCookTimeExtractor: ICooktimeExtractor = {
     );
 
     return new CookTimeModel(cookTime);
-  },
-};
+  }
+}
+
+export const cuisineAZCookTimeExtractor = new CuisineAZCookTimeExtractor();

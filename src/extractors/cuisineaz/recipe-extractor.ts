@@ -11,13 +11,19 @@ import { cuisineAZNumberOfPersonExtractor } from "@extractors/cuisineaz/numberOf
 import { cuisineAZStepExtractor } from "@extractors/cuisineaz/step.extractor";
 import { cuisineAZTitleExtractor } from "@extractors/cuisineaz/title.extractor";
 import { IExtractorWithSource } from "@extractors/interfaces/common/extractorAbstract.interface";
+import { AbstractExtractor } from "@extractors/interfaces/common/extractorAbstract.interface";
 
 export class CuisineAZRecipeExtractor
+  extends AbstractExtractor<RecipeModel>
   implements IExtractorWithSource<RecipeModel>
 {
-  async extract(
+  constructor() {
+    super("cuisineaz-recipe");
+  }
+
+  protected async doExtract(
     page: Page,
-    RecipeSource: RecipeSourceModel,
+    RecipeSource?: RecipeSourceModel,
   ): Promise<RecipeModel> {
     return new RecipeModel({
       title: await cuisineAZTitleExtractor.extract(page),
@@ -27,7 +33,7 @@ export class CuisineAZRecipeExtractor
       ingredientList: await cuisineAZIngredientExtractor.extract(page),
       stepList: await cuisineAZStepExtractor.extract(page),
       astuce: await cuisineAZAstuceExtractor.extract(page),
-      recipeSource: RecipeSource,
+      recipeSource: RecipeSource!,
     });
   }
 }

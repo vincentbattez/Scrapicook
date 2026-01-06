@@ -1,11 +1,11 @@
 {
   "parserOptions": {
-    "ecmaVersion": 2022,
+    "ecmaVersion": 2022
   },
   "compilerOptions": {
     "target": "ESNext",
     "module": "NodeNext",
-    "moduleResolution": "node",
+    "moduleResolution": "NodeNext",
     "esModuleInterop": true,
     "strict": true,
     "noStrictGenericChecks": false,
@@ -22,7 +22,10 @@
     ],
     "baseUrl": "./",
     "outDir": "./dist",
-    "rootDirs": ["./src", "./tests"],
+    "rootDirs": [
+      "./src",
+      "./tests"
+    ],
     "sourceMap": true,
     "useUnknownInCatchVariables": false,
     "paths": {
