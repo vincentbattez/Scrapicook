@@ -7,6 +7,18 @@ import { convertRecipe200ResponseSchema } from "@controllers/recipe/schemas/conv
 import { convertRecipeBodySchema } from "@controllers/recipe/schemas/convert/convertRecipeBody.schema";
 import { convertRecipeQuerySchema } from "@controllers/recipe/schemas/convert/convertRecipeQuery.schema";
 
+import { AstuceModel } from "@models/astuce/astuce.model";
+import { CookTimeModel } from "@models/cooktime/cooktime.model";
+import { ImageModel } from "@models/image/image.model";
+import { NumberOfPersonModel } from "@models/numberOfPerson/numberOfPerson.model";
+import { RecipeModel } from "@models/recipe/recipe.model";
+import { StepListModel } from "@models/step/step.model";
+import { TitleModel } from "@models/title/title.model";
+
+import { recipeConverterFactory } from "@factories/recipe-converter-factory";
+
+import { AvailableCreatorRecipeEnum } from "@services/enums/available-creator-recipe";
+
 const convertRecipeController: FastifyPluginAsync = async (
   fastify,
 ): Promise<void> => {
@@ -65,27 +77,61 @@ const convertRecipeController: FastifyPluginAsync = async (
     async (request, reply) => {
       try {
         const { target } = request.query;
-        const { recipe } = request.body;
+        const recipe = request.body;
 
-        // TODO: Implement the conversion logic
-        // This will involve:
-        // 1. Converting the RecipeModel to a RecipeModel instance
-        // 2. Using the factory pattern to select the appropriate converter
-        // 3. Converting to the target format (JOW, GROCY, etc.)
+        // Validate target enum
+        const targetEnum =
+          target.toUpperCase() as keyof typeof AvailableCreatorRecipeEnum;
 
-        // Placeholder response for now
+        if (!AvailableCreatorRecipeEnum[targetEnum]) {
+          throw new Error(`Target "${target}" is not supported`);
+        }
+
+        // Convert the raw recipe structure to internal RecipeModel
+        const titleModel = new TitleModel(recipe.title);
+        const imageModel = new ImageModel(recipe.image);
+        const cookTimeModel = new CookTimeModel(recipe.cookTime);
+        const numberOfPersonModel = new NumberOfPersonModel(
+          recipe.numberOfPerson,
+        );
+
+        // Convert steps - convert each step from the array
+        const stepListModel = new StepListModel();
+
+        recipe.stepList.forEach((stepItem) => {
+          stepListModel.pushStep(stepItem.step.description);
+        });
+
+        const astuceModel = new AstuceModel(recipe.astuce);
+
+        // TODO: For now, create empty ingredient list as ingredients/units conversion is complex
+        const ingredientListModel: any = { get: () => [] }; // Placeholder for complex ingredient conversion
+
+        // Build internal RecipeModel
+        const recipeModel = new RecipeModel({
+          title: titleModel,
+          image: imageModel,
+          cookTime: cookTimeModel,
+          numberOfPerson: numberOfPersonModel,
+          ingredientList: ingredientListModel,
+          stepList: stepListModel,
+          astuce: astuceModel,
+          recipeSource: null as any, // TODO: Convert recipe source if needed
+        });
+
+        // Use factory to get the appropriate converter
+        const converter = recipeConverterFactory.convert(
+          AvailableCreatorRecipeEnum[targetEnum],
+        );
+
+        // Convert to target format (JOW for now)
+        const convertedRecipe = converter.toRecipe(recipeModel);
+
         const response: IConvertRecipe200Response = {
-          data: {
-            message: `Conversion to ${target} not implemented yet`,
-            target,
-            statusCode: 501,
-          },
-          statusCode: 200,
-          message:
-            "Conversion endpoint structure ready, business logic to be implemented",
+          data: convertedRecipe,
         };
 
-        return await reply.code(response.statusCode).send(response);
+        return await reply.code(200).send(response);
       } catch (error) {
         return reply.code(error.statusCode || 500).send({
           message: error.message || "Internal server error",

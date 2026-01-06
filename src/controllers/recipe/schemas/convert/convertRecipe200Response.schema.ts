@@ -58,8 +58,6 @@ export const convertRecipe200ResponseSchema = {
         },
       ],
     },
-    statusCode: { type: "number" },
-    message: { type: "string" },
   },
-  required: ["data", "statusCode"],
+  required: ["data"],
 } as const;

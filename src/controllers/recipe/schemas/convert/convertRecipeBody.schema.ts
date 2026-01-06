@@ -2,148 +2,87 @@ export const convertRecipeBodySchema = {
   title: "Schema of the RecipeModel to convert",
   type: "object",
   properties: {
-    recipe: {
+    title: { type: "string" },
+    image: { type: "string" },
+    cookTime: {
       type: "object",
       properties: {
-        title: {
+        preparation: {
           type: "object",
           properties: {
-            title: { type: "string" },
+            value: { type: ["number", "null"] },
+            unit: { type: ["string", "null"] },
           },
-          required: ["title"],
+          required: ["value", "unit"],
         },
-        image: {
+        cooking: {
           type: "object",
           properties: {
-            image: { type: "string" },
+            value: { type: ["number", "null"] },
+            unit: { type: ["string", "null"] },
           },
-          required: ["image"],
+          required: ["value", "unit"],
         },
-        cookTime: {
+        rest: {
           type: "object",
           properties: {
-            cooktime: {
-              type: "object",
-              properties: {
-                preparation: {
-                  type: "object",
-                  properties: {
-                    value: { type: ["number", "null"] },
-                    unit: { type: ["string", "null"] },
-                  },
-                  required: ["value", "unit"],
-                },
-                cooking: {
-                  type: "object",
-                  properties: {
-                    value: { type: ["number", "null"] },
-                    unit: { type: ["string", "null"] },
-                  },
-                  required: ["value", "unit"],
-                },
-                rest: {
-                  type: "object",
-                  properties: {
-                    value: { type: ["number", "null"] },
-                    unit: { type: ["string", "null"] },
-                  },
-                  required: ["value", "unit"],
-                },
-              },
-              required: ["preparation", "cooking", "rest"],
-            },
+            value: { type: ["number", "null"] },
+            unit: { type: ["string", "null"] },
           },
-          required: ["cooktime"],
-        },
-        numberOfPerson: {
-          type: "object",
-          properties: {
-            numberOfPerson: { type: "number" },
-          },
-          required: ["numberOfPerson"],
-        },
-        ingredientList: {
-          type: "object",
-          properties: {
-            ingredientList: {
-              type: "array",
-              items: {
-                type: "object",
-                properties: {
-                  label: { type: "string" },
-                  quantity: { type: "number" },
-                  unit: {
-                    type: "object",
-                    properties: {
-                      unit: { type: ["string", "null"] },
-                    },
-                    required: ["unit"],
-                  },
-                },
-                required: ["label", "quantity", "unit"],
-              },
-            },
-          },
-          required: ["ingredientList"],
-        },
-        stepList: {
-          type: "object",
-          properties: {
-            step: {
-              type: "array",
-              items: {
-                type: "object",
-                properties: {
-                  step: {
-                    type: "object",
-                    properties: {
-                      step: { type: "number" },
-                      description: { type: "string" },
-                    },
-                    required: ["step", "description"],
-                  },
-                },
-                required: ["step"],
-              },
-            },
-            stepCount: { type: "number" },
-          },
-          required: ["step", "stepCount"],
-        },
-        astuce: {
-          type: "object",
-          properties: {
-            astuce: { type: "string" },
-          },
-          required: ["astuce"],
-        },
-        recipeSource: {
-          type: "object",
-          properties: {
-            recipeSource: {
-              type: "object",
-              properties: {
-                source: { type: "string" },
-                title: { type: "string" },
-                url: { type: "string" },
-              },
-              required: ["source", "title", "url"],
-            },
-          },
-          required: ["recipeSource"],
+          required: ["value", "unit"],
         },
       },
-      required: [
-        "title",
-        "image",
-        "cookTime",
-        "numberOfPerson",
-        "ingredientList",
-        "stepList",
-        "astuce",
-        "recipeSource",
-      ],
+      required: ["preparation", "cooking", "rest"],
+    },
+    numberOfPerson: { type: "number" },
+    ingredientList: {
+      type: "array",
+      items: {
+        type: "object",
+        properties: {
+          label: { type: "string" },
+          quantity: { type: "number" },
+          unit: { type: ["string", "null"] },
+        },
+        required: ["label", "quantity", "unit"],
+      },
+    },
+    stepList: {
+      type: "array",
+      items: {
+        type: "object",
+        properties: {
+          step: {
+            type: "object",
+            properties: {
+              step: { type: "number" },
+              description: { type: "string" },
+            },
+            required: ["step", "description"],
+          },
+        },
+        required: ["step"],
+      },
+    },
+    astuce: { type: "string" },
+    recipeSource: {
+      type: "object",
+      properties: {
+        source: { type: "string" },
+        title: { type: "string" },
+        url: { type: "string" },
+      },
+      required: ["source", "title", "url"],
     },
   },
-  required: ["recipe"],
+  required: [
+    "title",
+    "image",
+    "cookTime",
+    "numberOfPerson",
+    "ingredientList",
+    "stepList",
+    "astuce",
+    "recipeSource",
+  ],
 } as const;
