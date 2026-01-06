@@ -1,12 +1,8 @@
-import { logger } from "@src/server";
 import type { FastifyPluginAsync } from "fastify";
 
 import { IExtractRecipe200Response } from "@controllers/recipe/interfaces/extract/extractRecipe200Response.interface";
 import { IExtractRecipeQuery } from "@controllers/recipe/interfaces/extract/extractRecipeQuery.interface";
-import { extractRecipe200ResponseSchema } from "@controllers/recipe/schemas/extract/extractRecipe200Response.schema";
 import { extractRecipeQuerySchema } from "@controllers/recipe/schemas/extract/extractRecipeQuery.schema";
-
-import { jowQueries } from "@queries/jow/jow.queries";
 
 import { recipeExtractorService } from "@services/recipe/recipe-extract";
 
@@ -55,7 +51,7 @@ const extractRecipeController: FastifyPluginAsync = async (
           request,
         });
 
-        return await reply.code(response?.statusCode || 200).send(response);
+        return await reply.code(200).send(response.toJSONRecipe());
       } catch (error) {
         return reply.code(error.statusCode || 500).send({ ...error });
       }

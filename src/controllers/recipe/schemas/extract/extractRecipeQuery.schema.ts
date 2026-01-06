@@ -6,11 +6,6 @@ export const extractRecipeQuerySchema = {
       type: "string",
       description: "URL of the recipe page to extract",
     },
-    target: {
-      type: "string",
-      description:
-        "Target platform for the recipe extraction (e.g., JOW, CuisineAZ)",
-    },
   },
-  required: ["urlSource", "target"],
+  required: ["urlSource"],
 } as const;
