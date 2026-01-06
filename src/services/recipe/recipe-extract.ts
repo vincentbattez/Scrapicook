@@ -4,7 +4,8 @@ import { chromium } from "playwright";
 
 import { IExtractRecipeQuery } from "@controllers/recipe/interfaces/extract/extractRecipeQuery.interface";
 
-import { AvailableCreatorRecipeEnum } from "@services/enums/available-creator-recipe";
+import { RecipeModel } from "@models/recipe/recipe.model";
+
 import { publishRecipeForSource } from "@services/recipe/recipe-creator";
 import { recipeParser } from "@services/recipe/recipe-parser";
 
@@ -15,26 +16,38 @@ export const recipeExtractorService = {
     request: FastifyRequest<{
       Query: IExtractRecipeQuery;
     }>;
-  }): Promise<any> => {
-    const browser = await chromium.launch();
+  }): Promise<RecipeModel> => {
+    // logger.info(request.query);
+    logger.info("🚀 Starting recipe extraction...");
+    const browser = await chromium.launch({
+      headless: true,
+    });
     const page = await browser.newPage();
 
-    logger.info(request.query);
+    await page.goto(request.query.urlSource);
+    logger.info(`🌐 Page loaded: "${page.url()}"`);
 
-    await page.goto(
-      "https://www.cuisineaz.com/recettes/tzatziki-facile-17295.aspx",
-    );
-    const Recipe = await recipeParser.parseRecipeFromPage(page);
+    let Recipe;
+
+    try {
+      Recipe = await recipeParser.parseRecipeFromPage(page);
+    } catch (error) {
+      logger.error("❌ Error during recipe extraction:");
+      logger.error(error);
+      throw error;
+    }
 
     logger.info("📖", Recipe.toJSONRecipe());
 
     // @todo: expect to recipe has well all the properties
-    logger.info(Recipe.get().title.convert(AvailableCreatorRecipeEnum.JOW));
+    await browser.close();
 
+    return Recipe;
+
+    // @todo: must be moved to publish recipe service
     const publishResponse = await publishRecipeForSource(
       Recipe,
-      AvailableCreatorRecipeEnum.JOW,
+      request.query.target,
     );
-    logger.info("✅", publishResponse);
   },
 };

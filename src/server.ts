@@ -1,11 +1,14 @@
 /* eslint-disable prettier/prettier */
-import "./metric";
+// import "./metric";
 import { JsonSchemaToTsProvider } from "@fastify/type-provider-json-schema-to-ts";
 import Ajv from "ajv";
 import fastify from "fastify";
-
 import { app } from "./app";
 import {envToLogger} from "@src/logger";
+import dotenv from "dotenv";
+
+// Load environment variables from .env file
+dotenv.config();
 
 const environment: string = process.env.NODE_ENV ?? "development";
 
@@ -42,7 +45,8 @@ const ajv = new Ajv({
     fastifyApp.log.info(`NODE_ENV = ${process.env.NODE_ENV}`);
     fastifyApp.log.info(`${fastifyApp.printRoutes()}`);
   } catch (error) {
-    fastifyApp.log.error("❌ server error:", error);
+    fastifyApp.log.error("❌ server error:");
+    fastifyApp.log.error(error);
     process.exit(1);
   }
 })();

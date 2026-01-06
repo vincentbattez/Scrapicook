@@ -33,6 +33,11 @@ export const cuisineAZCookTimeExtractor: ICooktimeExtractor = {
       (acc: Partial<ICookTime>, [typeTime, targetTitleList]) => {
         let timeMatching;
 
+        logger.warn({
+          sourceWordList: cookTimeTitleList,
+          targetWordList: targetTitleList,
+        });
+
         try {
           timeMatching = stringUtils.findFirstMatchingString({
             sourceWordList: cookTimeTitleList,

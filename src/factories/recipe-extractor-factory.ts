@@ -19,7 +19,7 @@ export const recipeExtractorFactory = {
     }
 
     // Choose the extractor based on the source
-    logger.info(`🌟 Extract ${source} recipe`);
+    logger.info(`🌟 Extract "${source}" recipe`);
 
     return availableExtractorMapping[source].extract(page, RecipeSource);
   },

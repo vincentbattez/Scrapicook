@@ -7,7 +7,8 @@ import { IImageExtractor } from "@extractors/interfaces/image-extractor.interfac
 export const cuisineAZImageExtractor: IImageExtractor = {
   extract: async (page: Page): Promise<ImageModel> => {
     const imageUrl = await page
-      .locator(".recipe_img picture img")
+      .locator("#recipe_image picture img")
+      .first()
       .getAttribute("src");
 
     return new ImageModel(imageUrl);

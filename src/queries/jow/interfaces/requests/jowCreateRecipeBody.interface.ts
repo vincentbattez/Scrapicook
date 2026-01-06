@@ -31,14 +31,14 @@ export interface IJowConstituent {
 export interface IJowUnit {
   _id: string;
   __v: number;
+  id: string;
+  name: string;
   measurementSystemCompatibility: IJowMeasurementSystemCompatibility;
   abbreviations: IJowAbbreviation[];
   comments: string;
   updatedAt: string;
   createdAt: string;
   isNatural: boolean;
-  name: string;
-  id: string;
 }
 
 export interface IJowMeasurementSystemCompatibility {
@@ -48,8 +48,8 @@ export interface IJowMeasurementSystemCompatibility {
 }
 
 export interface IJowAbbreviation {
-  id: string;
   _id: string;
+  id: string;
   minAmount: number;
   maxAmount?: number;
   digits: number;
@@ -68,8 +68,8 @@ export interface IJowTip {
 }
 
 export interface IJowIngredient {
-  id: string;
   _id?: string;
+  id: string;
   name: string;
   imageUrl: string;
   naturalUnit: IJowUnit;
@@ -91,8 +91,8 @@ export interface IJowDisplayableUnit {
 }
 
 export interface IJowAlternativeUnit {
-  id: string;
   _id: string;
+  id: string;
   unit: IJowUnit;
   quantity: number;
 }
