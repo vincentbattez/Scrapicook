@@ -2,7 +2,10 @@ import { logger } from "@src/server";
 
 import { RecipeModel } from "@models/recipe/recipe.model.js";
 
-import { IJowIngredient } from "@queries/jow/interfaces/requests/jowCreateRecipeBody.interface";
+import {
+  IJowCreateRecipeBody,
+  IJowIngredient,
+} from "@queries/jow/interfaces/requests/jowCreateRecipeBody.interface";
 import { IJowCreateRecipeResponse } from "@queries/jow/interfaces/responses/jowCreateRecipeResponse.interface";
 
 import { AvailableCreatorRecipeEnum } from "@services/enums/available-creator-recipe";
@@ -14,6 +17,12 @@ export const jowQueries = {
     logger.info("body");
     logger.info(body);
 
+    return this.publishRecipe(body);
+  },
+
+  async publishRecipe(
+    jowRecipeBody: IJowCreateRecipeBody,
+  ): Promise<IJowCreateRecipeResponse> {
     // Check if environment variables are loaded
     if (!process.env.JOW_API_URL || !process.env.JOW_BEARER) {
       logger.error(
@@ -31,7 +40,7 @@ export const jowQueries = {
             "Content-Type": "application/json",
             Authorization: `Bearer ${process.env.JOW_BEARER}`,
           },
-          body: JSON.stringify(body),
+          body: JSON.stringify(jowRecipeBody),
         },
       );
 
