@@ -64,3 +64,5 @@ profile*
 /playwright/.cache/
 
 /prisma/generated
+/dist/
+/public/print/
