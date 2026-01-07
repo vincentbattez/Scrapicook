@@ -1,9 +1,8 @@
 export interface IPrintRecipe200Response {
-  data: {
-    message: string;
-    recipeId?: string;
-    status: "success" | "error";
-    platform?: string;
-    url?: string; // URL to view the printed recipe
-  };
+  message?: string;
+  statusCode?: number;
+  recipeList?: {
+    recipeName: string;
+    downloadLink?: string; // Path to download the PDF
+  }[];
 }

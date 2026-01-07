@@ -6,6 +6,7 @@ import fastify from "fastify";
 import { app } from "./app";
 import {envToLogger} from "@src/logger";
 import dotenv from "dotenv";
+import cors from '@fastify/cors'
 
 // Load environment variables from .env file
 dotenv.config();
@@ -32,6 +33,9 @@ const ajv = new Ajv({
     // await initSwagger(fastifyApp);
 
     // Register your application as a normal plugin
+    await fastifyApp.register(cors, {
+      // put your options here
+    })
     await fastifyApp.register(app);
 
     await fastifyApp.listen({

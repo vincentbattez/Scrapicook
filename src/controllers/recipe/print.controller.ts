@@ -137,7 +137,7 @@ async function _mergeWeeklyRecipes(): Promise<string> {
     const fileList = await fs.readdir(printDir);
     const pdfFileList = fileList.filter((file) => file.endsWith(".pdf"));
 
-    if (pdfFileList.length === 0) {
+    if (!pdfFileList.length) {
       logger.info("No PDF files found to merge");
 
       return "";
@@ -263,6 +263,32 @@ const printRecipeController: FastifyPluginAsync = async (
           weeklyPdfPath = await _mergeWeeklyRecipes();
         } catch (error) {
           logger.warn("⚠️ Failed to create weekly PDF:", error);
+        }
+
+        // If weekly PDF was created, serve it directly for download
+        if (weeklyPdfPath) {
+          try {
+            const pdfBuffer = await fs.readFile(weeklyPdfPath);
+            const fileName = path.basename(weeklyPdfPath);
+
+            // Set headers for PDF download
+            reply.header("Content-Type", "application/pdf");
+
+            reply.header(
+              "Content-Disposition",
+              `attachment; filename="${fileName}"`,
+            );
+            reply.header("Content-Length", pdfBuffer.length.toString());
+
+            logger.info(`✅ Serving weekly PDF directly: ${fileName}`);
+
+            return reply.send(pdfBuffer);
+          } catch (error) {
+            logger.warn(
+              "⚠️ Failed to serve PDF directly, returning JSON response:",
+              error,
+            );
+          }
         }
 
         const response: IPrintRecipe200Response = {
