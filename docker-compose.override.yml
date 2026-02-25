@@ -1,0 +1,55 @@
+# =============================================================================
+# Scrapicook - Docker Compose Override (Development)
+# This file is automatically merged with docker-compose.yml
+# Use for local development with hot-reload
+# =============================================================================
+
+version: '3.8'
+
+services:
+  # ---------------------------------------------------------------------------
+  # Development Application Service
+  # Overrides the production app service for development
+  # ---------------------------------------------------------------------------
+  app:
+    build:
+      target: dependencies  # Use deps stage and add dev tools
+    command: ["yarn", "dev"]  # Use tsx watch for hot-reload
+    environment:
+      - NODE_ENV=local
+      - DATABASE_URL=postgresql://scrapicook:scrapicook@db:5432/scrapicook?schema=public
+    volumes:
+      # Mount source code for hot-reload
+      - ./src:/app/src:ro
+      # Mount package.json for dependency changes
+      - ./package.json:/app/package.json:ro
+      - ./yarn.lock:/app/yarn.lock:ro
+      - ./tsconfig.json:/app/tsconfig.json:ro
+      # Mount prisma schema for changes
+      - ./prisma:/app/prisma:ro
+      # Persist node_modules (don't override container's)
+      - /app/node_modules
+      # Persist generated prisma client
+      - /app/generated
+    # Install dev dependencies in development
+    entrypoint: >
+      sh -c "
+        yarn install --frozen-lockfile &&
+        npx prisma generate &&
+        yarn dev
+      "
+    # Disable health check in development (faster startup)
+    healthcheck:
+      disable: true
+
+  # ---------------------------------------------------------------------------
+  # Development Database Service
+  # Simpler configuration for local dev
+  # ---------------------------------------------------------------------------
+  db:
+    ports:
+      - "5432:5432"  # Always expose DB port in development
+    environment:
+      - POSTGRES_USER=scrapicook
+      - POSTGRES_PASSWORD=scrapicook
+      - POSTGRES_DB=scrapicook

@@ -9,7 +9,16 @@
     "test": "node --test test/**/*.test.js",
     "build": "tsc -p tsconfig.json",
     "start": "fastify start -l info src/server.ts",
-    "dev": "NODE_ENV='local' tsx watch src/server.ts"
+    "dev": "NODE_ENV='local' tsx watch src/server.ts",
+    "docker:build": "docker-compose build",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "docker:logs": "docker-compose logs -f app",
+    "docker:dev": "docker-compose up",
+    "docker:dev:build": "docker-compose up --build",
+    "docker:db:migrate": "docker-compose exec app npx prisma migrate deploy",
+    "docker:db:seed": "docker-compose exec app npx prisma db seed",
+    "docker:prisma:generate": "docker-compose exec app npx prisma generate"
   },
   "keywords": [],
   "author": "",
