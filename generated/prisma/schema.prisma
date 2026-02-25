@@ -1,0 +1,141 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider        = "prisma-client-js"
+  output          = "../generated/prisma"
+  // Pour une meilleure expérience TypeScript
+  previewFeatures = ["multiSchema", "typedSql"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  schemas  = ["source", "target", "public"]
+}
+
+model SourceIngredient {
+  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  externalId String   @map("external_id") @db.VarChar
+  label      String   @db.VarChar
+  source     String   @db.VarChar
+  createdAt  DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt  DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  // Relations
+  mappings SourceTargetIngredient[] @relation("SourceIngredientMappings")
+
+  @@unique([externalId])
+  @@map("ingredients")
+  @@schema("source")
+}
+
+model SourceUnit {
+  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  externalId String   @map("external_id") @db.VarChar
+  label      String   @db.VarChar
+  source     String   @db.VarChar
+  createdAt  DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt  DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  // Relations
+  mappings SourceTargetUnit[] @relation("SourceUnitMappings")
+
+  @@unique([externalId])
+  @@map("units")
+  @@schema("source")
+}
+
+model TargetIngredient {
+  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  externalId String   @map("external_id") @db.VarChar
+  label      String   @db.VarChar
+  target     String   @db.VarChar
+  createdAt  DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt  DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  // Relations
+  mappings SourceTargetIngredient[] @relation("TargetIngredientMappings")
+
+  @@unique([externalId])
+  @@map("ingredients")
+  @@schema("target")
+}
+
+model TargetUnit {
+  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  externalId String   @map("external_id") @db.VarChar
+  label      String   @db.VarChar
+  target     String   @db.VarChar
+  createdAt  DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt  DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  // Relations
+  mappings SourceTargetUnit[] @relation("TargetUnitMappings")
+
+  @@unique([externalId])
+  @@map("units")
+  @@schema("target")
+}
+
+model SourceTargetIngredient {
+  id              String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  sourceId        String   @map("source_id") @db.VarChar
+  targetId        String   @map("target_id") @db.VarChar
+  confidenceScore Decimal  @map("confidence_score") @db.Decimal(3, 2)
+  mappingMethod   String   @map("mapping_method") @db.VarChar
+  createdAt       DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt       DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  // Relations
+  sourceIngredient SourceIngredient @relation("SourceIngredientMappings", fields: [sourceId], references: [id])
+  targetIngredient TargetIngredient @relation("TargetIngredientMappings", fields: [targetId], references: [id])
+
+  @@map("source_target_ingredients")
+  @@schema("public")
+}
+
+model SourceTargetUnit {
+  id              String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  sourceId        String   @map("source_id") @db.VarChar
+  targetId        String   @map("target_id") @db.VarChar
+  confidenceScore Decimal  @map("confidence_score") @db.Decimal(3, 2)
+  mappingMethod   String   @map("mapping_method") @db.VarChar
+  createdAt       DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt       DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  // Relations
+  sourceUnit SourceUnit @relation("SourceUnitMappings", fields: [sourceId], references: [id])
+  targetUnit TargetUnit @relation("TargetUnitMappings", fields: [targetId], references: [id])
+
+  @@map("source_target_units")
+  @@schema("public")
+}
+
+// Enums pour typer les valeurs métier
+enum MappingMethod {
+  HUMAN    @map("human")
+  FUZZY_V1 @map("fussyV1")
+  CHAT_GPT @map("chatGPT")
+
+  @@map("mapping_method")
+  @@schema("public")
+}
+
+enum SourceType {
+  GROCY @map("grocy")
+
+  @@map("source_type")
+  @@schema("public")
+}
+
+enum TargetType {
+  JOW   @map("jow")
+  GROCY @map("grocy")
+
+  @@map("target_type")
+  @@schema("public")
+}

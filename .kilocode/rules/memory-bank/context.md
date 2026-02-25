@@ -6,6 +6,7 @@
 - **CuisineAZ Extractor**: Fully implemented and functional
 - **Jow Converter**: Partially implemented (ingredient/unit conversion pending)
 - **ETL Pipeline**: Basic flow working end-to-end for title, steps, tips, cook times
+- **PDF Print Controller**: Recently implemented - saves recipes as PDF files with precise article-only capture
 
 ### Pending Work
 1. **Ingredient/Unit Conversion** - Methods throw `Error: Function not implemented`
@@ -18,6 +19,7 @@
 - Database schema established with multi-schema PostgreSQL
 - OpenTelemetry observability fully configured
 - CuisineAZ extractor with all recipe components working
+- **NEW**: PDF Print Controller implemented with precise article clipping functionality
 
 ## Next Steps
 
